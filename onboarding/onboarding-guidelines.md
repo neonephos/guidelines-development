@@ -1,0 +1,1 @@
+# NeoNephos Project Onboarding Guidelines
