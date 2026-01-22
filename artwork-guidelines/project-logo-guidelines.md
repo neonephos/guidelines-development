@@ -40,7 +40,7 @@ Check this reference to see all variants in action: [artwork/projects/armada at 
 
 ## Color Space
 
-An RGB (for web & screens) and CMYK (for print) version **MUST** be provided for each icon version.
+Each logo variant **MUST** be provided in RGB color space.
 
 ## Data Format
 
@@ -51,7 +51,7 @@ These are the requirements for logo files:
 - Logo Design in SVG
 - Artboard: 1:1 (for icon)
 - Placement: Horizontally and vertically centered
-- Color Mode: RGB and CMYK
+- Color Space: RGB
 - Fonts: Converted to outlines and embedded
 - Strokes: Converted to fills (no brushes)
 - No masks / hidden paths
