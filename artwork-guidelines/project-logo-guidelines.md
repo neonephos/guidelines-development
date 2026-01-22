@@ -29,14 +29,14 @@ Check this reference to see all variants in action: [artwork/projects/armada at 
 | Name | Color | Description|
 | -------- | ------- |------- |
 |Horizontal|Color|Colored horizontal logo with project name as text. [Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/horizontal/color/open-micro-frontend-platform-horizontal-color.svg)|
-|Horizontal|Black||
-|Horizontal|White||
-|Icon|Color|Colored icon without project name|
-|Icon|Black||
-|Icon|White||
-|Stacked|Color|Colored icon with project name as text stacked below|
-|Stacked|Black||
-|Stacked|White||
+|Horizontal|Black|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/horizontal/black/open-micro-frontend-platform-horizontal-black.svg)|
+|Horizontal|White|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/horizontal/white/open-micro-frontend-platform-horizontal-white.svg)|
+|Icon|Color|Colored icon without project name. [Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/icon/color/open-micro-frontend-platform-icon-color.svg)|
+|Icon|Black|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/icon/black/open-micro-frontend-platform-icon-black.svg)|
+|Icon|White|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/icon/white/open-micro-frontend-platform-icon-white.svg)|
+|Stacked|Color|Colored icon with project name as text stacked below. [Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/stacked/color/open-micro-frontend-platform-stacked-color.svg)|
+|Stacked|Black|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/stacked/black/open-micro-frontend-platform-stacked-black.svg)|
+|Stacked|White|[Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/stacked/white/open-micro-frontend-platform-stacked-white.svg)|
 
 ## Color Space
 
