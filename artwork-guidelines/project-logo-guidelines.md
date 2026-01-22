@@ -21,7 +21,7 @@ Beyond this, we ask all logos to follow general, universally accepted logo desig
 
 ## Variants
 
-**Multiple variants** of each logo MUST be created.
+**Multiple variants** of each logo **MUST** be created.
 *Note: If a logo has a black color by design, then no colored variant is needed, i.e. this reduces the required RGB logo variants from 9 to 6.*
 
 Check this reference to see all variants in action: [artwork/projects/armada at main · cncf/artwork](https://github.com/cncf/artwork/tree/main/projects/armada)
