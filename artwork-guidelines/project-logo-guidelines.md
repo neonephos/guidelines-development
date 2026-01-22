@@ -28,7 +28,7 @@ Check this reference to see all variants in action: [artwork/projects/armada at 
 
 | Name | Color | Description|
 | -------- | ------- |------- |
-|Horizontal|Color|Colored horizontal logo with project name as text|
+|Horizontal|Color|Colored horizontal logo with project name as text. [Example](https://raw.githubusercontent.com/neonephos/artwork/refs/heads/main/projects/open-micro-frontend-platform/horizontal/color/open-micro-frontend-platform-horizontal-color.svg)|
 |Horizontal|Black||
 |Horizontal|White||
 |Icon|Color|Colored icon without project name|
