@@ -24,6 +24,8 @@ Beyond this, we ask all logos to follow general, universally accepted logo desig
 **Multiple variants** of each logo **MUST** be created.
 *Note: If a logo has a black color by design, then no colored variant is needed, i.e. this reduces the required RGB logo variants from 9 to 6.*
 
+*Greyscale variants are possible; black, white, and intermediate grey tones may be used. No color tones are permitted.*
+
 Check this reference to see all variants in action: [artwork/projects/armada at main · cncf/artwork](https://github.com/cncf/artwork/tree/main/projects/armada)
 
 | Name | Color | Description|
