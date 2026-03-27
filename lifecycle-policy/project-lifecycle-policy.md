@@ -127,7 +127,7 @@ Projects in the Growth stage are generally expected to move out of the Growth st
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Growth Stage.
+* The project must maintain a public GOVERNANCE.md file that explicitly defines the project's decision-making and committer processes
 
 ##### Approval Process
 
@@ -158,7 +158,7 @@ Graduated Stage projects are expected to participate actively in TAC proceedings
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Graduated Stage.
+* The project must have adopted a Code of Conduct in a form acceptable to the NeoNephos Foundation, and maintain publicly accessible documentation of its release and governance processes
 
 ##### Approval Process
 
