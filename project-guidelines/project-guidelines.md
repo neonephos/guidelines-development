@@ -38,8 +38,6 @@
     * [15.1 Infrastructure Guarantees](#151-infrastructure-guarantees)
     * [15.2 Availability Targets](#152-availability-targets)
     * [15.3 Security and Compliance](#153-security-and-compliance)
-      * [15.3.1 Mandatory Compliance Requirements](#1531-mandatory-compliance-requirements)
-      * [15.3.2 Supplemental Compliance](#1532-supplemental-compliance)
     * [15.4 Escalation and Support](#154-escalation-and-support)
     * [15.5 Service Review](#155-service-review)
   * [16. Project Onboarding](#16-project-onboarding)
@@ -47,7 +45,7 @@
 
 ## 1. Introduction
 
-This document defines the current guidelines for projects goverened by the **NeoNephos Foundation**, a subfoundation of the Linux Foundation. All guidelines contained herein have been approved by the governing body and are binding unless otherwise stated.
+This document defines the current guidelines for projects governed by the **NeoNephos Foundation**, a subfoundation of the Linux Foundation. All guidelines contained herein have been approved by the governing body and are binding unless otherwise stated.
 
 The following terms are used throughout this document:
 
@@ -108,11 +106,11 @@ The following timelines for resolution may be defined in this document:
 
 ### Technical Charters
 
-| Priority   | Resolution            | Owner |
-|------------|-----------------------|-------|
-| **SHOULD** | By next minor release | TSC   |
+| Priority | Resolution            | Owner |
+|----------|-----------------------|-------|
+| **MUST** | By next minor release | TSC   |
 
-Each project **SHOULD** make its project charter publicly available (website or repository). If converted to Markdown, the Markdown version **MUST** remain synchronized with the canonical source.
+Each project **MUST** make its project charter publicly available (website or repository). If converted to Markdown, the Markdown version **MUST** remain synchronized with the canonical source.
 
 ### Meetings
 
@@ -146,6 +144,7 @@ All TSC members and their roles **MUST** be listed publicly (e.g., website or re
 * **Contribution Guidelines**: Projects **MUST** provide a `CONTRIBUTING.md` including CLA/DCO details.
 * **Voting and Decision-Making**: The TSC **MUST** document its voting model (consensus, majority, or lazy consensus).
 * **Ownership Documentation**: `OWNERS.md` or equivalent **MUST** define maintainers and approvers.
+* **Security Officer**: Projects **MUST** designate a Security Officer responsible for coordinating vulnerability response (see [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md)).
 
 ### 5.1 Contribution Authentication
 
@@ -177,14 +176,15 @@ Related sections: [4 — Administration](#4-administration); [6 — Technical an
 * **Dependency Management**:
 
     * Projects **MUST** track third-party licenses.
-    * Projects **MAY** generate SBOMs for generated artifacts.
+    * For dependency scanning and SBOM requirements, see [NeoNephos Security Guidelines §8 — Supply Chain Security](../security-guidelines/security-guidelines.md#8-supply-chain-security).
 
-* **Security Disclosure**:
+* **Security Disclosure**: See [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for vulnerability disclosure, response process, and `SECURITY.md` requirements.
 
-    * Projects **MUST** provide a [`SECURITY.md`](https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository) defining their security policy.
-    * Projects **MUST** define disclosure contacts (see Security Officer above).
-    * Projects **MUST** Configure GitHub to allow [reporting vulnerabilities privately](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability)
-    * Projects **SHOULD** provide an alternative method (e.g. email) to allow private disclosure of vulnerabilities
+* **Data Collection and Privacy**:
+
+    * Projects that collect data **MUST** document the collection with an opt-out mechanism.
+    * Projects **MUST** exclude personally identifiable information (PII) from telemetry by default.
+    * If PII is collected, projects **MUST** publish a Data Processing Notice within 180 days.
 
 Related sections: [11 — Security](#11-security); [15 — Operational Guarantees](#15-operational-guarantees); [10 — Operations and Infrastructure](#10-operations-and-infrastructure).
 
@@ -256,7 +256,7 @@ Related sections: [10 — Operations and Infrastructure](#10-operations-and-infr
 
     * Projects **MAY** use LFX Insights for community metrics.
 
-Related sections: [14 — Project Lifecycle and Graduation Criteria](#14-project-lifecycle-and-graduation-criteria); [5 — Governance and Process](#5-governance-and-process); [12 — Funding Acknowledgements](#12-funding-acknowledgements);
+Related sections: [14 — Project Lifecycle and Graduation Criteria](#14-project-lifecycle-and-graduation-criteria); [5 — Governance and Process](#5-governance-and-process); [12 — Funding Acknowledgements](#12-funding-acknowledgements).
 
 ---
 
@@ -286,7 +286,7 @@ Related sections: [15 — Operational Guarantees](#15-operational-guarantees); [
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** follow the guidelines defined within the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md)
+Projects **MUST** follow the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md), which cover vulnerability disclosure and response, supply chain security, and security transparency.
 
 ---
 
@@ -379,7 +379,7 @@ The **NeoNephos Foundation** provides baseline operational guarantees for hosted
 * **Artifact Hosting**:
 
     * Projects **MUST** publish release artifacts to foundation-controlled registries, package repositories, or distribution systems.
-    * Projects **SHOULD** sign release artifacts and provide provenance metadata (see [11 — Security](#11-security)).
+    * Projects **SHOULD** sign release artifacts and provide provenance metadata (see [Security Guidelines §8 — Supply Chain Security](../security-guidelines/security-guidelines.md#8-supply-chain-security)).
 
 * **Domains and DNS**:
 
@@ -408,76 +408,7 @@ The **NeoNephos Foundation** provides baseline operational guarantees for hosted
 
 ### 15.3 Security and Compliance
 
-#### 15.3.1 Mandatory Compliance Requirements
-
-All projects seeking to become part of NeoNephos **MUST** comply with the following enterprise-wide security and operational requirements.
-
-**Security Policies**
-
-* **Authentication**
-
-    * **MUST** enforce Two-Factor Authentication (2FA) for all organization members.
-    * **SSH Deploy Keys**: No global policy enforced. Projects **SHOULD** disable deploy keys at the organization level. Deploy keys pose security risks; personal or machine accounts with MFA are preferred.
-
-* **GitHub Actions Security**
-
-    * **Self-hosted Runners**
-
-        * **Repository-level**: **MUST NOT** be enabled.
-        * **Organization-level**: **SHOULD NOT** be enabled unless necessary, and **MUST** be approved by GitHub Enterprise Cloud account administrators who record decisions via TAC vote.
-        * Rationale: GitHub-hosted runners are preferred; self-hosted runners require careful setup to avoid exploitation.
-    * **Fork Pull Request Workflows**
-
-        * **MUST** require approval for first-time contributors.
-        * Purpose: Prevents unauthorized code execution from external contributors.
-    * **Workflow Permissions**
-
-        * Default **MUST** be set to “Read repository contents and packages.”
-        * Write access **MUST** be explicitly requested via the `permissions` key in workflow files.
-        * Rationale: Minimizes risk by preventing workflows from gaining unnecessary write access.
-
-**Operational Policies**
-
-* **Data Retention**
-
-    * **Private Repositories**: Artifact and log retention **MUST** be configured to 180 days.
-    * **Public Repositories**: Retention defaults to 90 days (GitHub limitation).
-
-#### 15.3.2 Supplemental Compliance
-
-Any project **SHOULD** abide by following additional guidelines:
-
-**Minimize Overarching Permissions of Maintainers:**
-
-- Only necessary permissions should be provided.
-- Limit GitHub Owner access to a few admin accounts
-- Limit the number of maintainers with admin permissions
-- Ensure settings and permissions changes are made by trusted admins
-- Use pull requests for repository changes
-- Conduct package releases via CI/CD pipelines (recommend GitHub Actions)
-- Have an up-to-date overview of maintainer permissions across different platforms
-- Consider preventing maintainers from direct write access, requiring pull request merges from forks.
-- Maintainer candidates have a history of contributions for at least 6 months
-- Maintainer candidates are known to an existing maintainer
-- Maintainer candidates provide a real identity to an existing maintainer in an in person event
-
-**CI/GitHub Actions Hardening:**
-
-- Use GitHub Actions for CI
-- Avoid self-hosted runners wherever possible
-- Use workload identities/OIDC or short-lived GitHub Access tokens for external interactions
-- Utilize fine-grained access tokens if workload identity is unsupported
-- Use attestation/signing of packages
-- Limit GITHUB_TOKEN permissions to read-only by default
-- For other CI systems, consult experts
-- Temporary creating access tokens to perform a local batch job can be accepted in exceptional circumstances,
-  but must they must be deleted afterwards (e.g. max lifetime ~6h)
-
-**Other**
-
-- Use automation (e.g., Dependabot, Renovate) for dependency updates
-- Use automation (e.g., CodeQL, SonarQube) for finding code flaws and vulnerabilities
-- Implement automatic tests for code validation
+For all security and compliance requirements — including infrastructure security controls (2FA, GitHub Actions, runner policies, data retention), supply chain security, and supplemental hardening practices — see the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md).
 
 ---
 
