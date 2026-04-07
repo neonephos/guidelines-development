@@ -1,8 +1,16 @@
-# NeoNephos Security Policy
+# NeoNephos Security Policy Template
 
-The NeoNephos Foundation takes the security of our software seriously, including all source code repositories managed through its GitHub organizations.
+This document provides a default security policy for NeoNephos Foundation projects. Each project organization should place a `SECURITY.md` file in its `.github` repository (or in individual repositories) based on this template.
 
-If you believe you have found a security vulnerability in any NeoNephos repository, please report it to us as described below.
+Replace all `{{ PLACEHOLDER }}` values with your organization-specific details before publishing.
+
+---
+
+# {{ PROJECT_NAME }} Security Policy
+
+The {{ PROJECT_NAME }} project takes the security of our software seriously, including all source code repositories managed through the [{{ ORG_NAME }}](https://github.com/{{ ORG_NAME }}) GitHub organization.
+
+If you believe you have found a security vulnerability in any {{ ORG_NAME }} repository, please report it to us as described below.
 
 ## Reporting Security Issues
 
@@ -11,14 +19,7 @@ If you believe you have found a security vulnerability in any NeoNephos reposito
 Instead, please use one of the following channels:
 
   - **GitHub Security Advisories** — navigate to the **Security** tab of the affected repository and select **"Report a vulnerability"** to privately report an advisory.
-  - **Email** — contact the security team of the affected organization (see table below).
-
-| Organization | Security Contact |
-|---|---|
-| [platform-mesh](https://github.com/platform-mesh) | [platform-mesh-security@lists.neonephos.org](mailto:platform-mesh-security@lists.neonephos.org) |
-| [openmfp](https://github.com/openmfp) | [openmfp-security@lists.neonephos.org](mailto:openmfp-security@lists.neonephos.org) |
-
-Organizations not listed above should use the foundation-wide security contact: [security@lists.neonephos.org](mailto:security@lists.neonephos.org)
+  - **Email**: [{{ SECURITY_EMAIL }}](mailto:{{ SECURITY_EMAIL }})
 
 Please include the requested information listed below (as much as you can provide) to help us better understand the nature and scope of the possible issue:
 
@@ -51,6 +52,12 @@ We commit to:
   - Providing an estimated timeline for a fix.
   - Notifying you when the vulnerability is resolved.
 
-## Adopting This Policy
+---
 
-Each NeoNephos organization should place a `SECURITY.md` file in its `.github` repository (or in individual repositories) that references or adapts this policy. At a minimum, the file should specify the organization-specific security contact and link back to this guideline for the full disclosure process.
+## Placeholders Reference
+
+| Placeholder | Description | Example |
+|---|---|---|
+| `{{ PROJECT_NAME }}` | Human-readable project name | Platform Mesh |
+| `{{ ORG_NAME }}` | GitHub organization name | platform-mesh |
+| `{{ SECURITY_EMAIL }}` | Security contact email | platform-mesh-security@lists.neonephos.org |
