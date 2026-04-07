@@ -192,9 +192,9 @@ Related sections: [6 — Vulnerability Response Process](#6-vulnerability-respon
 
 ### 8.1 Artifact Signing
 
-| Priority   | Resolution            | Owner |
-|------------|-----------------------|-------|
-| **SHOULD** | By next minor release | TSC   |
+| Priority   | Resolution                                   | Owner |
+|------------|----------------------------------------------|-------|
+| **SHOULD** | When publishing artifacts to external consumers | TSC   |
 
 Projects **SHOULD** sign all published release artifacts (container images, binaries, packages) using [Sigstore cosign](https://docs.sigstore.dev/cosign/signing/overview/) or an equivalent signing mechanism. Signing **SHOULD** be integrated into the CI/CD pipeline.
 
@@ -202,9 +202,9 @@ Projects **SHOULD** sign all published release artifacts (container images, bina
 
 ### 8.2 Build Provenance (SLSA)
 
-| Priority   | Resolution            | Owner |
-|------------|-----------------------|-------|
-| **SHOULD** | By next minor release | TSC   |
+| Priority   | Resolution                                   | Owner |
+|------------|----------------------------------------------|-------|
+| **SHOULD** | When publishing artifacts to external consumers | TSC   |
 
 Projects **SHOULD** generate [SLSA](https://slsa.dev/) provenance attestations for published artifacts. The target level is at minimum [SLSA Build Level 2](https://slsa.dev/spec/v1.0/levels) (scripted build, hosted build platform).
 
@@ -212,9 +212,9 @@ Projects **MAY** use the [SLSA GitHub Generator](https://github.com/slsa-framewo
 
 ### 8.3 Software Bill of Materials (SBOM)
 
-| Priority   | Resolution            | Owner |
-|------------|-----------------------|-------|
-| **SHOULD** | By next minor release | TSC   |
+| Priority   | Resolution                                   | Owner |
+|------------|----------------------------------------------|-------|
+| **SHOULD** | When publishing artifacts to external consumers | TSC   |
 
 Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each published release artifact. SBOMs **MUST** use either [SPDX](https://spdx.dev/) or [CycloneDX](https://cyclonedx.org/) format.
 
