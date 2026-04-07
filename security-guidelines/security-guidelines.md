@@ -133,6 +133,8 @@ If the vulnerability affects multiple NeoNephos projects, the reporting project'
 
 Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with a CVSS score ≥ 4.0 (Medium or higher). CVE identifiers **SHOULD** be obtained via [GitHub's CNA program](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory#requesting-a-cve-identification-number).
 
+> **Practical note:** CVE assignment adds credibility and traceability but involves administrative overhead. Early-stage projects or projects with a small user base **MAY** defer CVE assignment until a stable release has been published and external adoption is established. The GitHub Security Advisory alone already provides adequate transparency for most cases.
+
 ### 6.5 Coordinated Disclosure
 
 | Priority | Resolution      | Owner |
@@ -180,7 +182,7 @@ Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.o
 - **Fix SLA**: Time from triage completion to a fix being merged.
 - **Disclosure SLA**: Time from triage completion to publishing a GitHub Security Advisory. The disclosure SLA **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
 
-If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory.
+If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
 
 Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [6.5 — Coordinated Disclosure](#65-coordinated-disclosure).
 
@@ -195,6 +197,8 @@ Related sections: [6 — Vulnerability Response Process](#6-vulnerability-respon
 | **SHOULD** | By next minor release | TSC   |
 
 Projects **SHOULD** sign all published release artifacts (container images, binaries, packages) using [Sigstore cosign](https://docs.sigstore.dev/cosign/signing/overview/) or an equivalent signing mechanism. Signing **SHOULD** be integrated into the CI/CD pipeline.
+
+> **Practical note:** Artifact signing, build provenance, and SBOM generation (Sections 8.1–8.3) are intended to be adopted incrementally. Projects **SHOULD** prioritize dependency scanning ([Section 8.4](#84-dependency-scanning)) first, as it provides the highest security value with the least effort. The remaining supply chain practices can be introduced as the project matures and publishes artifacts to external consumers.
 
 ### 8.2 Build Provenance (SLSA)
 
