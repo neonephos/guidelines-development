@@ -41,14 +41,21 @@ The following maintainers are responsible for handling vulnerability reports:
 
 ## Supported Versions
 
-*List which versions of your project currently receive security updates. Adjust the table to match
-your release branches.*
+*State clearly which versions receive security updates. Choose whichever format fits your project —
+a table, a simple sentence, or a link to your release policy. Remove this guidance text before
+publishing. Examples:*
 
-| Version | Supported |
-|---------|-----------|
-| \<x.y.z\> (latest) | Yes |
-| \<x.y-1.z\> | Yes |
-| < \<x.y-1\> | No |
+**Option A — Single active branch (common for early-stage projects):**
+
+> Only the latest release on the `main` branch is supported with security updates.
+
+**Option B — Multiple supported releases:**
+
+> | Version | Supported |
+> |---------|-----------|
+> | 2.x     | Yes       |
+> | 1.x     | Yes (until YYYY-MM-DD) |
+> | < 1.0   | No        |
 
 ## Response Process
 
@@ -61,12 +68,15 @@ This project follows the [NeoNephos Security Guidelines](../security-guidelines/
 
 ### Severity Response SLAs
 
-| Severity | CVSS Score | Fix Target |
-|----------|------------|------------|
+| Severity | CVSS Score | Fix Target (calendar days) |
+|----------|------------|----------------------------|
 | Critical | 9.0 – 10.0 | ≤ 7 days |
 | High | 7.0 – 8.9 | ≤ 30 days |
 | Medium | 4.0 – 6.9 | ≤ 90 days |
 | Low | 0.1 – 3.9 | Best effort |
+
+*If your project cannot meet a target, communicate an updated timeline to the reporter and publish
+a workaround or mitigation advisory. Transparency matters more than speed.*
 
 ## Disclosure Policy
 
@@ -80,7 +90,7 @@ We are committed to crediting reporters in our security advisories unless you pr
 
 ## Past Security Advisories
 
-*Link to your project's published GitHub Security Advisories. Remove this section if no advisories
-have been published yet.*
+*Optional — include this section only if your project has published advisories. Remove it entirely
+for new projects.*
 
 See [Published Security Advisories](https://github.com/<org>/<repo>/security/advisories?state=published).
