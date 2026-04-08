@@ -72,6 +72,38 @@ Every NeoNephos Foundation project has an associated maturity level. Proposed pr
 
 Representatives from all projects may attend TAC meetings and contribute work regardless of their stage.
 
+### Sandbox Stage
+
+#### Definition
+
+Sandbox projects are projects which the TAC believes are worthwhile to pursue but are either temporary or do not fulfill the criteria of the other maturity levels. The Sandbox stage provides a low threshold way to ensure projects can participate in the NeoNephos ecosystem, even if they are experimental or otherwise not in alignment with the other stages.
+
+##### Examples
+
+* New projects that may only have a proof-of-concept.
+* Experimental projects that are worthwhile to pursue in the eyes of the TAC. 
+
+##### Expectations
+
+A project can remain a Sandbox project for a maximum of two years.
+
+##### Acceptance Criteria
+
+To be considered for the Sandbox Stage, the project must meet the following requirements:
+* Submission of the Project Proposal, as defined above.
+* Have a charter document with an intellectual property policy that leverages open licenses, including, in the case of contributions of code, the use of one or more licenses approved as "open" by the Open Source Initiative.  The staff of the NeoNephos Foundation can assist projects in preparing a technical charter following the NeoNephos Foundation’s standard template.
+* In the case of existing projects, an agreement to transfer the project name and electronic account assets (source code repository, social media accounts, domain names, etc.) to Linux Foundation Europe for the benefit of the NeoNephos Foundation.
+
+##### Approval Process
+
+Once the above Acceptance Criteria have been completed, the project will be scheduled to present their project at an upcoming TAC meeting.
+
+After the review, to be accepted at the Sandbox Stage, the project must receive a simple majority of the TAC.
+
+##### Benefits
+
+Sandbox projects can prominently display on their website/README their status as a NeoNephos Foundation Sandbox Project. Projects at the Sandbox Stage will receive support from the NeoNephos Foundation in support of the Project’s progression.
+
 ### Incubation Stage
 
 #### Definition
