@@ -76,7 +76,7 @@ Representatives from all projects may attend TAC meetings and contribute work re
 
 #### Definition
 
-Sandbox projects are projects which the TAC believes are worthwhile to pursue but are either temporary or do not fulfill the criteria of the other maturity levels. The Sandbox stage provides a low threshold way to ensure projects can participate in the NeoNephos ecosystem, even if they are experimental or otherwise not in alignment with the other stages.
+Sandbox projects are projects which the TAC believes are worthwhile to pursue but are either temporary or do not fulfill the criteria of the other maturity levels. The Sandbox stage provides a low threshold way to ensure projects are nurtured by the NeoNephos ecosystem, even if they are experimental or otherwise not in alignment with the other stages.
 
 ##### Examples
 
@@ -85,7 +85,7 @@ Sandbox projects are projects which the TAC believes are worthwhile to pursue bu
 
 ##### Expectations
 
-A project can remain a Sandbox project for a maximum of two years.
+A project can remain a Sandbox project for a maximum of one year.
 
 ##### Acceptance Criteria
 
