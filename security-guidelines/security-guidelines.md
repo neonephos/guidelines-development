@@ -23,14 +23,21 @@
     * [8.3 Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom)
     * [8.4 Dependency Scanning](#84-dependency-scanning)
   * [9. Security Transparency](#9-security-transparency)
-  * [10. Acknowledgements](#10-acknowledgements)
+  * [10. Operational Security Controls](#10-operational-security-controls)
+    * [10.1 Authentication](#101-authentication)
+    * [10.2 CI/CD Security](#102-cicd-security)
+    * [10.3 Access Governance](#103-access-governance)
+    * [10.4 Code Quality and Scanning](#104-code-quality-and-scanning)
+    * [10.5 Data Retention](#105-data-retention)
+    * [10.6 Automated Security Posture Verification](#106-automated-security-posture-verification)
+  * [11. Acknowledgements](#11-acknowledgements)
 <!-- TOC -->
 
 ## 1. Introduction
 
-This document defines the security guidelines for projects governed by the **NeoNephos Foundation**. It establishes requirements for vulnerability disclosure, incident response, and supply chain security that all NeoNephos projects must follow.
+This document defines the security guidelines for projects governed by the **NeoNephos Foundation**. It establishes requirements for vulnerability disclosure, incident response, supply chain security, and operational security controls that all NeoNephos projects must follow.
 
-These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Infrastructure-level security controls (2FA enforcement, GitHub Actions permissions, runner policies, and data retention) are defined in [Section 15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines and are not repeated here.
+These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [Section 15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
 
 Related sections: [2 — Normative Language](#2-normative-language); [3 — Conformance Model](#3-conformance-model); [4 — Scope](#4-scope).
 
@@ -56,10 +63,10 @@ This document covers:
 
 - **Vulnerability disclosure and response**: How projects receive, handle, and disclose security vulnerabilities.
 - **Supply chain security**: Requirements for signing, provenance, SBOMs, and dependency management of released artifacts.
+- **Operational security controls**: Authentication, CI/CD security, access governance, code scanning, and data retention requirements.
 
 This document does **not** cover:
 
-- Infrastructure security controls (2FA, GitHub Actions, runners) — see [Project Guidelines §15.3](../project-guidelines/project-guidelines.md#153-security-and-compliance).
 - OpenSSF Best Practices Badge requirements — see [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
 - Governance, maintainer access, and operational policies — see [Project Guidelines](../project-guidelines/project-guidelines.md).
 
@@ -85,8 +92,8 @@ Projects **SHOULD** enable Private Vulnerability Reporting at the organization l
 
 Projects **MUST** provide a `SECURITY.md` file in every repository that contains publishable code or artifacts. The `SECURITY.md` **MUST** include at minimum:
 
-1. A link to the repository's GitHub Private Vulnerability Reporting page.
-2. Supported versions: which release branches receive security updates.
+1. Instructions for reporting a vulnerability via GitHub Private Vulnerability Reporting, including a direct link where the `SECURITY.md` is repository-specific.
+2. A version support policy stating which releases receive security updates (e.g., "the latest two minor releases" or a version table).
 3. The expected response timeline (referencing [Section 6](#6-vulnerability-response-process) of this document).
 
 Projects **SHOULD** additionally provide an email address or alternative private channel for reporters who cannot use GitHub.
@@ -250,7 +257,114 @@ Related sections: [6.6 — Post-Disclosure](#66-post-disclosure); [5.2 — SECUR
 
 ---
 
-## 10. Acknowledgements
+## 10. Operational Security Controls
+
+This section defines security-relevant operational controls for NeoNephos projects. These requirements complement the supply chain security practices in [Section 8](#8-supply-chain-security) and the infrastructure guarantees in the [Project Guidelines §15](../project-guidelines/project-guidelines.md#15-operational-guarantees).
+
+### 10.1 Authentication
+
+| Priority | Resolution      | Owner |
+|----------|-----------------|-------|
+| **MUST** | ASAP (≤30 days) | TSC   |
+
+Projects **MUST** enforce Two-Factor Authentication (2FA) for all organization members.
+
+Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
+
+### 10.2 CI/CD Security
+
+| Priority | Resolution      | Owner |
+|----------|-----------------|-------|
+| **MUST** | ASAP (≤30 days) | TSC   |
+
+**Self-hosted runners**
+
+- Repository-level self-hosted runners **MUST NOT** be enabled.
+- Organization-level self-hosted runners **SHOULD NOT** be enabled unless necessary, and **MUST** be approved by GitHub Enterprise Cloud account administrators who record the decision via a TAC vote.
+- *Rationale*: GitHub-hosted runners are preferred; self-hosted runners require careful hardening to prevent exploitation.
+
+**Fork pull-request workflows**
+
+- Projects **MUST** require approval for first-time contributors before workflows execute on fork pull requests.
+- *Rationale*: Prevents unauthorized code execution from external contributors.
+
+**Workflow permissions**
+
+- The default `GITHUB_TOKEN` permission **MUST** be set to "Read repository contents and packages."
+- Write access **MUST** be explicitly requested via the `permissions` key in workflow files.
+- *Rationale*: Limits blast radius by preventing workflows from gaining unnecessary write access.
+
+**Credential handling**
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+- Projects **SHOULD** use workload identities (OIDC) or short-lived GitHub access tokens for interactions with external services.
+- Where workload identity is not supported, projects **SHOULD** use fine-grained personal access tokens with the minimum required scopes.
+- Temporary access tokens created for exceptional local batch jobs **MUST** be deleted immediately after use and **MUST NOT** exceed a lifetime of 6 hours.
+- Projects **SHOULD** conduct package releases via CI/CD pipelines (GitHub Actions recommended) rather than from local machines. See also [Section 8.1 — Artifact Signing](#81-artifact-signing) and [Section 8.2 — Build Provenance](#82-build-provenance-slsa).
+
+### 10.3 Access Governance
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+Projects **SHOULD** follow the principle of least privilege for all access grants:
+
+- Limit GitHub Organization Owner access to a small number of administrative accounts.
+- Limit the number of maintainers with repository admin permissions.
+- Ensure settings and permissions changes are made only by trusted administrators.
+- Use pull requests for all repository changes; consider preventing direct push access by requiring pull-request merges from forks.
+- Maintain an up-to-date inventory of maintainer permissions across all platforms used by the project.
+
+**Maintainer vetting**
+
+Projects **SHOULD** require that maintainer candidates:
+
+1. Have a demonstrated history of contributions for at least 6 months.
+2. Are vouched for by an existing maintainer.
+3. Have verified their real identity with an existing maintainer, preferably in person.
+
+*Rationale*: Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)). For the broader contributor promotion process, see the [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
+
+### 10.4 Code Quality and Scanning
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities. Examples of acceptable tools include [CodeQL](https://codeql.github.com/) and [SonarQube](https://www.sonarsource.com/products/sonarqube/).
+
+Projects **SHOULD** implement automated tests (unit, integration) as part of their CI pipeline to validate code correctness and prevent regressions.
+
+For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Scanning](#84-dependency-scanning).
+
+### 10.5 Data Retention
+
+| Priority | Resolution      | Owner |
+|----------|-----------------|-------|
+| **MUST** | ASAP (≤30 days) | TSC   |
+
+- **Private repositories**: Artifact and log retention **MUST** be configured to 180 days.
+- **Public repositories**: Retention defaults to 90 days (GitHub platform limitation).
+
+### 10.6 Automated Security Posture Verification
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/scorecard) on all repositories containing publishable code. Scorecard provides automated checks for many of the requirements in this document and the [Project Guidelines](../project-guidelines/project-guidelines.md), including branch protection, dependency scanning, CI permissions, and vulnerability disclosure.
+
+Projects **MAY** integrate Scorecard into their CI pipeline via the [Scorecard GitHub Action](https://github.com/ossf/scorecard-action) to receive continuous feedback on security posture.
+
+Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 — Dependency Scanning](#84-dependency-scanning); [10.2 — CI/CD Security](#102-cicd-security).
+
+---
+
+## 11. Acknowledgements
 
 | Priority   | Resolution      | Owner |
 |------------|-----------------|-------|
