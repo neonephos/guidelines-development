@@ -23,6 +23,10 @@ Direct link: [Report a vulnerability](https://github.com/<org>/<repo>/security/a
 
 *For more information, see [Privately reporting a security vulnerability](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).*
 
+*If this SECURITY.md is used as an organization-level file in a `.github` repository, remove the
+direct link above and keep only the step-by-step instructions, since the link cannot point to a
+specific repository.*
+
 ### Alternative Contact
 
 *If your project offers an alternative private reporting channel (e.g., email), list it here.
@@ -41,9 +45,10 @@ The following maintainers are responsible for handling vulnerability reports:
 
 ## Supported Versions
 
-*State clearly which versions receive security updates. Choose whichever format fits your project —
-a table, a simple sentence, or a link to your release policy. Remove this guidance text before
-publishing. Examples:*
+*State clearly which versions receive security updates. This should express a version support policy
+(e.g., "the latest two minor releases") rather than naming specific branches. Choose whichever format
+fits your project — a table, a simple sentence, or a link to your release policy. Remove this guidance
+text before publishing. Examples:*
 
 **Option A — Single active branch (common for early-stage projects):**
 
