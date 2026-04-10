@@ -85,7 +85,7 @@ Sandbox projects are projects which the TAC believes are worthwhile to pursue bu
 
 ##### Expectations
 
-A project can remain a Sandbox project for a maximum of one year.
+A project can remain a Sandbox project for a maximum of one year. Sandbox projects are experimental and their output is not intended to be used in production. Projects that release production-ready artifacts should transition to a more mature stage.
 
 ##### Acceptance Criteria
 
