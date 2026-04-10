@@ -14,7 +14,7 @@ The onboarding process ensures that new projects adopt baseline governance, tech
 
 **Governance and Administration**
 
-* **MUST** publish a project charter (canonical + Markdown).
+* **MUST** link to the project charter hosted by the Linux Foundation.
 * **MUST** adopt the [NeoNephos Code of Conduct](https://github.com/neonephos/.github/blob/main/CODE_OF_CONDUCT.md).
 * **MUST** provide `CONTRIBUTING.md` with DCO/CLA details.
 * **MUST** document maintainers and TSC members publicly.

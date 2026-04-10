@@ -110,7 +110,7 @@ The following timelines for resolution may be defined in this document:
 |----------|-----------------------|-------|
 | **MUST** | By next minor release | TSC   |
 
-Each project **MUST** make its project charter publicly available (website or repository). If converted to Markdown, the Markdown version **MUST** remain synchronized with the canonical source.
+Each project **MUST** link to its project charter hosted by the Linux Foundation (website or repository).
 
 ### Meetings
 
