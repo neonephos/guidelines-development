@@ -7,7 +7,10 @@
   * [3. Conformance Model](#3-conformance-model)
   * [4. Scope](#4-scope)
   * [5. Security Contact per Project](#5-security-contact-per-project)
-    * [5.1 GitHub Private Vulnerability Reporting](#51-github-private-vulnerability-reporting)
+    * [5.1 Private Vulnerability Intake Channel](#51-private-vulnerability-intake-channel)
+      * [5.1.1 GitHub](#511-github)
+      * [5.1.2 GitLab](#512-gitlab)
+      * [5.1.3 Other Platforms and Self-Hosted Setups](#513-other-platforms-and-self-hosted-setups)
     * [5.2 SECURITY.md](#52-securitymd)
   * [6. Vulnerability Response Process](#6-vulnerability-response-process)
     * [6.1 Acknowledgement](#61-acknowledgement)
@@ -74,15 +77,42 @@ This document does **not** cover:
 
 ## 5. Security Contact per Project
 
-### 5.1 GitHub Private Vulnerability Reporting
+### 5.1 Private Vulnerability Intake Channel
 
 | Priority | Resolution      | Owner |
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** enable [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability) on all repositories that contain publishable code or artifacts. This is the primary channel for receiving vulnerability reports.
+Projects **MUST** provide a private channel through which external reporters can submit vulnerability reports confidentially. The specific mechanism depends on the hosting platform, but **MUST** ensure that:
+
+1. Reports are visible only to designated security contacts (see [Section 6](#6-vulnerability-response-process)) and **MUST NOT** be publicly accessible.
+2. The channel is documented in the project's `SECURITY.md` (see [Section 5.2](#52-securitymd)).
+3. Reporters receive a confirmation that their report has been received.
+
+The following subsections define platform-specific requirements.
+
+#### 5.1.1 GitHub
+
+Projects hosted on **GitHub** **MUST** enable [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability) on all repositories that contain publishable code or artifacts. This is the preferred intake channel for GitHub-hosted projects.
 
 Projects **SHOULD** enable Private Vulnerability Reporting at the organization level to ensure newly created repositories inherit this setting.
+
+#### 5.1.2 GitLab
+
+Projects hosted on **GitLab** **MUST** accept vulnerability reports via [confidential issues](https://docs.gitlab.com/ee/user/project/issues/confidential_issues.html). The `SECURITY.md` **MUST** instruct reporters to mark issues as confidential when submitting vulnerability reports.
+
+Projects **SHOULD** configure an [issue template](https://docs.gitlab.com/ee/user/project/description_templates.html) named "Security Vulnerability" that pre-selects the confidentiality checkbox and provides a structured reporting form.
+
+#### 5.1.3 Other Platforms and Self-Hosted Setups
+
+Projects that are **not** hosted on GitHub or GitLab (e.g., self-hosted Gitea, Forgejo, Bitbucket, or other platforms) **MUST** provide at least one of the following private intake channels:
+
+1. **Encrypted email**: A dedicated security contact email address published in `SECURITY.md` and in a [`security.txt`](https://securitytxt.org/) file following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). The project **SHOULD** publish a PGP/GPG public key to enable encrypted communication.
+2. **Platform-native private reporting**: If the hosting platform offers a built-in confidential issue or vulnerability reporting mechanism, the project **MUST** enable and use it.
+
+Projects **SHOULD** additionally publish a `/.well-known/security.txt` file on any project website, conforming to [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116), with at minimum the `Contact` and `Expires` fields.
+
+> **Practical note:** Regardless of platform, projects **SHOULD** provide an email address or alternative private channel in `SECURITY.md` as a fallback for reporters who do not have an account on the project's hosting platform.
 
 ### 5.2 SECURITY.md
 
@@ -92,11 +122,11 @@ Projects **SHOULD** enable Private Vulnerability Reporting at the organization l
 
 Projects **MUST** provide a `SECURITY.md` file in every repository that contains publishable code or artifacts. The `SECURITY.md` **MUST** include at minimum:
 
-1. Instructions for reporting a vulnerability via GitHub Private Vulnerability Reporting, including a direct link where the `SECURITY.md` is repository-specific.
+1. Instructions for reporting a vulnerability via the project's private intake channel (see [Section 5.1](#51-private-vulnerability-intake-channel)), including a direct link where applicable.
 2. A version support policy stating which releases receive security updates (e.g., "the latest two minor releases" or a version table).
 3. The expected response timeline (referencing [Section 6](#6-vulnerability-response-process) of this document).
 
-Projects **SHOULD** additionally provide an email address or alternative private channel for reporters who cannot use GitHub.
+Projects **SHOULD** additionally provide an email address or alternative private channel for reporters who do not have an account on the project's hosting platform.
 
 A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md).
 
@@ -114,7 +144,7 @@ Each project's TSC **MUST** designate at least two maintainers as security conta
 
 ### 6.1 Acknowledgement
 
-Projects **MUST** acknowledge receipt of a vulnerability report within **3 business days**. The acknowledgement **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory).
+Projects **MUST** acknowledge receipt of a vulnerability report within **3 business days**. The acknowledgement **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory, GitLab confidential issue, or encrypted email).
 
 ### 6.2 Triage and Severity Assessment
 
@@ -128,7 +158,9 @@ The reporter **SHOULD** be informed of the triage outcome and the planned remedi
 
 ### 6.3 Fix Coordination
 
-Fix development **SHOULD** happen in a private fork or draft advisory within GitHub to prevent premature disclosure. The fix **MUST** be reviewed by at least one additional maintainer before merging.
+Fix development **SHOULD** happen in a private fork, draft advisory, or other non-public workspace to prevent premature disclosure. The fix **MUST** be reviewed by at least one additional maintainer before merging.
+
+> **Platform-specific guidance:** On GitHub, use a [temporary private fork within a Security Advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-repository-security-vulnerability). On GitLab, use a [confidential merge request](https://docs.gitlab.com/ee/user/project/merge_requests/confidential.html). On other platforms, use a private branch or out-of-band patch review.
 
 If the vulnerability affects multiple NeoNephos projects, the reporting project's TSC **SHOULD** coordinate with the affected projects' TSCs before disclosure. The TAC **MAY** facilitate cross-project coordination.
 
@@ -138,9 +170,9 @@ If the vulnerability affects multiple NeoNephos projects, the reporting project'
 |------------|-----------------|-------|
 | **SHOULD** | ASAP (≤30 days) | TSC   |
 
-Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with a CVSS score ≥ 4.0 (Medium or higher). CVE identifiers **SHOULD** be obtained via [GitHub's CNA program](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory#requesting-a-cve-identification-number).
+Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with a CVSS score ≥ 4.0 (Medium or higher). Projects hosted on GitHub **SHOULD** obtain CVE identifiers via [GitHub's CNA program](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory#requesting-a-cve-identification-number). Projects on other platforms **MAY** request CVEs through [MITRE's CVE Request form](https://cveform.mitre.org/) or another authorized CNA.
 
-> **Practical note:** CVE assignment adds credibility and traceability but involves administrative overhead. Early-stage projects or projects with a small user base **MAY** defer CVE assignment until a stable release has been published and external adoption is established. The GitHub Security Advisory alone already provides adequate transparency for most cases.
+> **Practical note:** CVE assignment adds credibility and traceability but involves administrative overhead. Early-stage projects or projects with a small user base **MAY** defer CVE assignment until a stable release has been published and external adoption is established. A platform security advisory alone already provides adequate transparency for most cases.
 
 ### 6.5 Coordinated Disclosure
 
@@ -151,12 +183,14 @@ Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with 
 Projects **MUST** follow a coordinated disclosure process:
 
 1. **Embargo period**: The maximum embargo duration is **90 calendar days** from the date the report is acknowledged. During this period, details of the vulnerability **MUST NOT** be disclosed publicly.
-2. **Disclosure**: Once a fix is available (or the embargo expires), the project **MUST** publish a [GitHub Security Advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory) containing:
+2. **Disclosure**: Once a fix is available (or the embargo expires), the project **MUST** publish a security advisory containing:
    - A description of the vulnerability.
    - Affected versions.
    - The CVSS score and vector.
    - The CVE identifier (if assigned).
    - Remediation steps or patched versions.
+
+   On GitHub, use [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory). On GitLab, use a [project-level vulnerability record](https://docs.gitlab.com/ee/user/application_security/vulnerabilities/). On other platforms, publish the advisory on the project website or mailing list and link to it from `SECURITY.md`.
 3. **Early disclosure**: If active exploitation is detected in the wild, the TSC **MAY** shorten the embargo period and disclose early with whatever fix or mitigation is available.
 
 ### 6.6 Post-Disclosure
@@ -187,7 +221,7 @@ Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.o
 | **Low**      | 0.1 – 3.9  | Best effort            | Best effort            |
 
 - **Fix SLA**: Time from triage completion to a fix being merged.
-- **Disclosure SLA**: Time from triage completion to publishing a GitHub Security Advisory. The disclosure SLA **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
+- **Disclosure SLA**: Time from triage completion to publishing a security advisory (see [Section 6.5](#65-coordinated-disclosure)). The disclosure SLA **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
 
 If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
 
@@ -247,7 +281,7 @@ Related sections: [Project Guidelines §15.3.2 — Supplemental Compliance](../p
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** publish security advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories).
+Projects **MUST** publish security advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via the platform's advisory mechanism. On GitHub, use [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories). On GitLab, use [project-level vulnerability records](https://docs.gitlab.com/ee/user/application_security/vulnerabilities/). On other platforms, publish advisories on the project website or mailing list and link to them from `SECURITY.md`.
 
 Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions.
 
@@ -370,6 +404,6 @@ Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 
 |------------|-----------------|-------|
 | **SHOULD** | ASAP (≤30 days) | TSC   |
 
-Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity. Acknowledgement **SHOULD** be included in the published GitHub Security Advisory and **MAY** also be included in release notes.
+Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity. Acknowledgement **SHOULD** be included in the published security advisory and **MAY** also be included in release notes.
 
 Related sections: [6.5 — Coordinated Disclosure](#65-coordinated-disclosure); [9 — Security Transparency](#9-security-transparency).

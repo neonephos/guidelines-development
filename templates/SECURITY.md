@@ -11,7 +11,10 @@ set of requirements.*
 If you discover a security vulnerability in **\<Project Name\>**, please report it responsibly
 through one of the channels below. **Do not open a public issue for security vulnerabilities.**
 
-### GitHub Private Vulnerability Reporting (Preferred)
+*Choose the section that matches your hosting platform. Remove the other sections and this guidance
+text before publishing.*
+
+### Option A: GitHub Private Vulnerability Reporting (Preferred for GitHub-hosted projects)
 
 Please use GitHub's built-in private vulnerability reporting:
 
@@ -27,9 +30,30 @@ Direct link: [Report a vulnerability](https://github.com/<org>/<repo>/security/a
 direct link above and keep only the step-by-step instructions, since the link cannot point to a
 specific repository.*
 
+### Option B: GitLab Confidential Issues (Preferred for GitLab-hosted projects)
+
+Please report vulnerabilities as a **confidential issue**:
+
+1. Navigate to **Issues** in this project.
+2. Click **New issue**.
+3. Check the **"This issue is confidential"** checkbox.
+4. Provide a detailed description including steps to reproduce.
+5. Submit the issue.
+
+*For more information, see [Confidential issues](https://docs.gitlab.com/ee/user/project/issues/confidential_issues.html).*
+
+### Option C: Email (For other platforms or as a fallback)
+
+You may report vulnerabilities via email to **\<security contact email\>**.
+
+*If your project publishes a PGP/GPG key for encrypted communication, mention it here and provide
+a link to the public key or a fingerprint. Projects SHOULD also publish a
+[`security.txt`](https://securitytxt.org/) file following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116).*
+
 ### Alternative Contact
 
-*If your project offers an alternative private reporting channel (e.g., email), list it here.
+*If your project offers an additional private reporting channel beyond the primary one above
+(e.g., email as fallback for a GitHub/GitLab-hosted project), list it here.
 Otherwise, remove this section.*
 
 You may also report vulnerabilities via email to **\<security contact email\>**.
@@ -38,10 +62,12 @@ You may also report vulnerabilities via email to **\<security contact email\>**.
 
 The following maintainers are responsible for handling vulnerability reports:
 
-| Name | GitHub Handle | Role |
-|------|---------------|------|
+| Name | Handle | Role |
+|------|--------|------|
 | *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Security Officer |
 | *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Maintainer |
+
+*Adjust the profile links to match your hosting platform.*
 
 ## Supported Versions
 
@@ -69,7 +95,7 @@ This project follows the [NeoNephos Security Guidelines](../security-guidelines/
 - **Acknowledgement**: We will acknowledge your report within **3 business days**.
 - **Triage**: We will assess the severity (using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document)) within **7 calendar days**.
 - **Embargo**: Vulnerability details will remain confidential for up to **90 days** while a fix is developed.
-- **Disclosure**: Once a fix is available, we will publish a [GitHub Security Advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories) with full details.
+- **Disclosure**: Once a fix is available, we will publish a security advisory with full details.
 
 ### Severity Response SLAs
 
@@ -96,6 +122,6 @@ We are committed to crediting reporters in our security advisories unless you pr
 ## Past Security Advisories
 
 *Optional — include this section only if your project has published advisories. Remove it entirely
-for new projects.*
+for new projects. Adjust the link to match your hosting platform.*
 
 See [Published Security Advisories](https://github.com/<org>/<repo>/security/advisories?state=published).
