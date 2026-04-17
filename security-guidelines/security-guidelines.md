@@ -25,6 +25,8 @@
     * [8.2 Build Provenance (SLSA)](#82-build-provenance-slsa)
     * [8.3 Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom)
     * [8.4 Dependency Scanning](#84-dependency-scanning)
+    * [8.5 Container Image Scanning](#85-container-image-scanning)
+    * [8.6 License Compliance Scanning](#86-license-compliance-scanning)
   * [9. Security Transparency](#9-security-transparency)
   * [10. Operational Security Controls](#10-operational-security-controls)
     * [10.1 Authentication](#101-authentication)
@@ -272,6 +274,38 @@ Projects **MUST** enable automated dependency scanning to detect known vulnerabi
 Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
 
 Related sections: [Project Guidelines §15.3.2 — Supplemental Compliance](../project-guidelines/project-guidelines.md#1532-supplemental-compliance); [Project Guidelines §6 — Technical and Development Practices](../project-guidelines/project-guidelines.md#6-technical-and-development-practices).
+
+### 8.5 Container Image Scanning
+
+| Priority   | Resolution                                   | Owner |
+|------------|----------------------------------------------|-------|
+| **SHOULD** | When publishing container images              | TSC   |
+
+Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry. Image scanning **SHOULD** be integrated into the CI/CD pipeline so that every built image is evaluated before publication.
+
+Projects **SHOULD** fail the pipeline (or at minimum generate a warning) when vulnerabilities at or above a project-defined severity threshold are detected. Projects **SHOULD** define this threshold explicitly (e.g., "Critical and High").
+
+Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), or equivalent. Registry-level scanning (e.g., Harbor with integrated Trivy, or cloud-native registry scanning) **MAY** be used as an additional layer but **SHOULD NOT** replace pipeline-level scanning.
+
+> **OpenSSF alignment:** The [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Maturity Level 3) require projects to define thresholds for SCA findings — including container image vulnerabilities — address violations before release, and automatically evaluate changes against policy.
+
+Related sections: [8.3 — Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom); [8.4 — Dependency Scanning](#84-dependency-scanning).
+
+### 8.6 License Compliance Scanning
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+Projects **SHOULD** automate license scanning of all direct and transitive dependencies to detect incompatible, unknown, or unlicensed components. License scanning **SHOULD** be integrated into the CI/CD pipeline.
+
+Projects **SHOULD** define an allowlist of acceptable licenses (e.g., OSI-approved permissive licenses such as MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause) and flag any dependency whose license is not on the allowlist. Dependencies with incompatible or unknown licenses **SHOULD** be resolved before release.
+
+Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy) (supports license scanning), [Anchore Grant](https://github.com/anchore/grant), [REUSE](https://reuse.software/), or equivalent.
+
+> **OpenSSF alignment:** The [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-LE-02.01` and `OSPS-LE-02.02` (Maturity Level 1) require that project licenses meet the OSI or FSF definitions. Controls `OSPS-VM-05.01` and `OSPS-VM-05.02` (Maturity Level 3) extend this to dependencies, requiring projects to define thresholds for license-related SCA findings and address violations before release.
+
+Related sections: [8.4 — Dependency Scanning](#84-dependency-scanning); [8.5 — Container Image Scanning](#85-container-image-scanning).
 
 ---
 
