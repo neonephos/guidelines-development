@@ -31,10 +31,13 @@
   * [10. Operational Security Controls](#10-operational-security-controls)
     * [10.1 Authentication](#101-authentication)
     * [10.2 CI/CD Security](#102-cicd-security)
-    * [10.3 Access Governance](#103-access-governance)
-    * [10.4 Code Quality and Scanning](#104-code-quality-and-scanning)
-    * [10.5 Data Retention](#105-data-retention)
-    * [10.6 Automated Security Posture Verification](#106-automated-security-posture-verification)
+    * [10.3 Branch Protection](#103-branch-protection)
+    * [10.4 Secret Scanning and Prevention](#104-secret-scanning-and-prevention)
+    * [10.5 Access Governance](#105-access-governance)
+    * [10.6 Code Quality and Scanning](#106-code-quality-and-scanning)
+    * [10.7 Data Retention](#107-data-retention)
+    * [10.8 Security Assessment](#108-security-assessment)
+    * [10.9 Automated Security Posture Verification](#109-automated-security-posture-verification)
   * [11. Acknowledgements](#11-acknowledgements)
 <!-- TOC -->
 
@@ -74,6 +77,8 @@ This document does **not** cover:
 
 - OpenSSF Best Practices Badge requirements — see [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
 - Governance, maintainer access, and operational policies — see [Project Guidelines](../project-guidelines/project-guidelines.md).
+
+Where applicable, individual sections reference the corresponding controls from the [OpenSSF Security Baseline (OSPS)](https://baseline.openssf.org/) to help projects map these guidelines to the broader open source security ecosystem.
 
 ---
 
@@ -253,6 +258,8 @@ Projects **SHOULD** generate [SLSA](https://slsa.dev/) provenance attestations f
 
 Projects **MAY** use the [SLSA GitHub Generator](https://github.com/slsa-framework/slsa-github-generator) or equivalent tooling to generate and publish provenance attestations.
 
+Projects that publish provenance attestations **SHOULD** document how consumers can verify them (e.g., via `cosign verify-attestation` or `slsa-verifier`). See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-DO-03.01` and `OSPS-DO-03.02` (Level 3).
+
 ### 8.3 Software Bill of Materials (SBOM)
 
 | Priority   | Resolution                                   | Owner |
@@ -319,6 +326,8 @@ Projects **MUST** publish security advisories for all confirmed vulnerabilities 
 
 Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions.
 
+Release changelogs **SHOULD** explicitly flag security-relevant modifications (fixes, dependency updates addressing CVEs, configuration changes with security impact). See [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-BR-04.01` (Level 2).
+
 Projects **SHOULD** maintain a public record of past security advisories accessible from the project's `SECURITY.md`.
 
 Related sections: [6.6 — Post-Disclosure](#66-post-disclosure); [5.2 — SECURITY.md](#52-securitymd).
@@ -373,7 +382,54 @@ Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy ke
 - Temporary access tokens created for exceptional local batch jobs **MUST** be deleted immediately after use and **MUST NOT** exceed a lifetime of 6 hours.
 - Projects **SHOULD** conduct package releases via CI/CD pipelines (GitHub Actions recommended) rather than from local machines. See also [Section 8.1 — Artifact Signing](#81-artifact-signing) and [Section 8.2 — Build Provenance](#82-build-provenance-slsa).
 
-### 10.3 Access Governance
+**Pipeline input sanitization**
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+- Workflows **SHOULD** treat all externally supplied metadata (issue titles, PR bodies, branch names, commit messages) as untrusted input and sanitize it before use in shell commands, environment variables, or script interpolation.
+- Workflows triggered by events from untrusted sources (e.g., `pull_request_target`, `issue_comment`) **SHOULD NOT** check out or execute code from the untrusted source in a context that has access to repository secrets.
+- *Rationale*: Prevents script injection and privilege escalation via CI/CD pipelines. See [OpenSSF Security Baseline](https://baseline.openssf.org/) `OSPS-BR-01.01` (Level 1) and the [OpenSSF SCM Best Practices](https://best.openssf.org/SCM-BestPractices/).
+
+**Workflow dependency pinning and action provenance**
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+- Third-party GitHub Actions **SHOULD** be pinned to a specific commit SHA rather than a mutable tag (e.g., `actions/checkout@<sha>` instead of `actions/checkout@v4`).
+- Projects **SHOULD** restrict allowed GitHub Actions to actions created by GitHub and verified creators, or to an explicit allowlist maintained by the project. See the [OpenSSF Scorecard `Pinned-Dependencies` check](https://github.com/ossf/scorecard/blob/main/docs/checks.md#pinned-dependencies).
+
+### 10.3 Branch Protection
+
+| Priority | Resolution      | Owner |
+|----------|-----------------|-------|
+| **MUST** | ASAP (≤30 days) | TSC   |
+
+Projects **MUST** enable branch protection rules on the primary branch (e.g., `main`) of every repository containing publishable code. At minimum:
+
+1. Direct commits to the primary branch **MUST** be prevented; all changes **MUST** go through a pull request or merge request.
+2. Force-pushes to the primary branch **MUST** be disabled.
+3. Deletion of the primary branch **MUST** be prevented.
+4. At least one approving review from a non-author maintainer **MUST** be required before merge.
+5. Required status checks (CI build, tests, security scans) **SHOULD** pass before merge.
+
+> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-AC-03.01` and `OSPS-AC-03.02` (Level 1) require preventing unauthorized commits and deletion of the primary branch. Control `OSPS-QA-07.01` (Level 3) requires non-author approval before merge. See also the [OpenSSF SCM Best Practices](https://best.openssf.org/SCM-BestPractices/) for platform-specific configuration guidance.
+
+### 10.4 Secret Scanning and Prevention
+
+| Priority | Resolution      | Owner |
+|----------|-----------------|-------|
+| **MUST** | ASAP (≤30 days) | TSC   |
+
+Projects **MUST** enable automated secret scanning on all repositories to detect accidentally committed credentials, API keys, and tokens. On GitHub, enable [Secret Scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning) and [Push Protection](https://docs.github.com/en/code-security/secret-scanning/introduction/about-push-protection). On GitLab, enable [Secret Detection](https://docs.gitlab.com/ee/user/application_security/secret_detection/). On other platforms, integrate a tool such as [Gitleaks](https://github.com/gitleaks/gitleaks) or [TruffleHog](https://github.com/trufflesecurity/trufflehog) into the CI pipeline.
+
+Projects **SHOULD** enable push protection to block commits containing detected secrets before they enter the repository history.
+
+> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-BR-07.01` (Level 1) requires that the project's version control system **MUST** prevent secrets from being included in a commit. The [OpenSSF Concise Guide for Developing More Secure Software](https://best.openssf.org/Concise-Guide-for-Developing-More-Secure-Software) (Recommendation #9) reinforces this requirement.
+
+### 10.5 Access Governance
 
 | Priority   | Resolution      | Owner |
 |------------|-----------------|-------|
@@ -397,7 +453,7 @@ Projects **SHOULD** require that maintainer candidates:
 
 *Rationale*: Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)). For the broader contributor promotion process, see the [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
 
-### 10.4 Code Quality and Scanning
+### 10.6 Code Quality and Scanning
 
 | Priority   | Resolution      | Owner |
 |------------|-----------------|-------|
@@ -405,11 +461,15 @@ Projects **SHOULD** require that maintainer candidates:
 
 Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities. Examples of acceptable tools include [CodeQL](https://codeql.github.com/) and [SonarQube](https://www.sonarsource.com/products/sonarqube/).
 
+Projects **SHOULD** define a severity threshold for SAST findings (e.g., "Critical and High") and **SHOULD** fail or gate the CI pipeline when findings at or above the threshold are detected. Findings below the threshold **SHOULD** be tracked and triaged but need not block merges.
+
 Projects **SHOULD** implement automated tests (unit, integration) as part of their CI pipeline to validate code correctness and prevent regressions.
+
+> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-06.01` and `OSPS-VM-06.02` (Level 3) require projects to define a threshold for SAST findings and automatically block changes that violate it.
 
 For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Scanning](#84-dependency-scanning).
 
-### 10.5 Data Retention
+### 10.7 Data Retention
 
 | Priority | Resolution      | Owner |
 |----------|-----------------|-------|
@@ -418,7 +478,23 @@ For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Sca
 - **Private repositories**: Artifact and log retention **MUST** be configured to 180 days.
 - **Public repositories**: Retention defaults to 90 days (GitHub platform limitation).
 
-### 10.6 Automated Security Posture Verification
+### 10.8 Security Assessment
+
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
+
+Projects **SHOULD** perform an initial security assessment when entering the Growth or Graduated lifecycle stage. The assessment **SHOULD** include:
+
+1. Identification of the project's trust boundaries and external interfaces.
+2. A lightweight threat model covering the project's primary attack surfaces (e.g., using [STRIDE](https://en.wikipedia.org/wiki/STRIDE_%28security%29) or equivalent).
+3. Documentation of known security assumptions and residual risks.
+
+The assessment does not need to be formal; a section in the project's documentation or a dedicated `SECURITY_ASSESSMENT.md` is sufficient. Projects **SHOULD** review and update the assessment when significant architectural changes occur.
+
+> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-SA-03.01` (Level 2) and `OSPS-SA-03.02` (Level 3) require security assessment, threat modeling, and attack surface analysis for mature projects.
+
+### 10.9 Automated Security Posture Verification
 
 | Priority   | Resolution      | Owner |
 |------------|-----------------|-------|
