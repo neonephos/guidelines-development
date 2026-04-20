@@ -47,6 +47,8 @@ This document defines the security guidelines for projects governed by the **Neo
 
 These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [Section 15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
 
+These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). Rather than duplicating those standards, this document defines NeoNephos-specific requirements (such as response SLAs and conformance tiers) and provides platform-specific guidance that generic standards cannot offer. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
+
 Related sections: [2 — Normative Language](#2-normative-language); [3 — Conformance Model](#3-conformance-model); [4 — Scope](#4-scope).
 
 ---
@@ -136,6 +138,8 @@ Projects **MUST** provide a `SECURITY.md` file in every repository that contains
 Projects **SHOULD** additionally provide an email address or alternative private channel for reporters who do not have an account on the project's hosting platform.
 
 A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md).
+
+> **Exemplary implementation:** [Gardener's SECURITY.md](https://github.com/gardener/.github/blob/main/SECURITY.md) includes named security contacts, a detailed disclosure process, and severity-based handling.
 
 Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [7 — Severity Classification and Response SLAs](#7-severity-classification-and-response-slas).
 
@@ -232,6 +236,8 @@ Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.o
 
 If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
 
+> **Rationale:** These SLAs are aligned with industry practice. The 90-day embargo follows the [OpenSSF Model Outbound Vulnerability Disclosure Policy](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md) and is consistent with CNCF projects such as Envoy. The severity-based fix timelines are comparable to those used by GitLab and Chainguard, adjusted from "patch availability" to "triage completion" to reflect the realities of volunteer-maintained open source projects.
+
 Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [6.5 — Coordinated Disclosure](#65-coordinated-disclosure).
 
 ---
@@ -256,9 +262,7 @@ Projects **SHOULD** sign all published release artifacts (container images, bina
 
 Projects **SHOULD** generate [SLSA](https://slsa.dev/) provenance attestations for published artifacts. The target level is at minimum [SLSA Build Level 2](https://slsa.dev/spec/v1.0/levels) (scripted build, hosted build platform).
 
-Projects **MAY** use the [SLSA GitHub Generator](https://github.com/slsa-framework/slsa-github-generator) or equivalent tooling to generate and publish provenance attestations.
-
-Projects that publish provenance attestations **SHOULD** document how consumers can verify them (e.g., via `cosign verify-attestation` or `slsa-verifier`). See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-DO-03.01` and `OSPS-DO-03.02` (Level 3).
+For implementation guidance and tooling options, see the [SLSA specification](https://slsa.dev/spec/v1.0/) and [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-DO-03.01` and `OSPS-DO-03.02` (Level 3).
 
 ### 8.3 Software Bill of Materials (SBOM)
 
@@ -292,9 +296,7 @@ Projects that publish container images **SHOULD** scan all images for known vuln
 
 Projects **SHOULD** fail the pipeline (or at minimum generate a warning) when vulnerabilities at or above a project-defined severity threshold are detected. Projects **SHOULD** define this threshold explicitly (e.g., "Critical and High").
 
-Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), or equivalent. Registry-level scanning (e.g., Harbor with integrated Trivy, or cloud-native registry scanning) **MAY** be used as an additional layer but **SHOULD NOT** replace pipeline-level scanning.
-
-> **OpenSSF alignment:** The [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Maturity Level 3) require projects to define thresholds for SCA findings — including container image vulnerabilities — address violations before release, and automatically evaluate changes against policy.
+Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), or [OSV-Scanner](https://google.github.io/osv-scanner/). See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) for additional guidance on SCA thresholds and policy evaluation.
 
 Related sections: [8.3 — Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom); [8.4 — Dependency Scanning](#84-dependency-scanning).
 
@@ -308,9 +310,7 @@ Projects **SHOULD** automate license scanning of all direct and transitive depen
 
 Projects **SHOULD** define an allowlist of acceptable licenses (e.g., OSI-approved permissive licenses such as MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause) and flag any dependency whose license is not on the allowlist. Dependencies with incompatible or unknown licenses **SHOULD** be resolved before release.
 
-Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy) (supports license scanning), [Anchore Grant](https://github.com/anchore/grant), [REUSE](https://reuse.software/), or equivalent.
-
-> **OpenSSF alignment:** The [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-LE-02.01` and `OSPS-LE-02.02` (Maturity Level 1) require that project licenses meet the OSI or FSF definitions. Controls `OSPS-VM-05.01` and `OSPS-VM-05.02` (Maturity Level 3) extend this to dependencies, requiring projects to define thresholds for license-related SCA findings and address violations before release.
+Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [REUSE](https://reuse.software/), or equivalent. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1) and `OSPS-VM-05.01`, `OSPS-VM-05.02` (Level 3) for alignment with broader license compliance requirements.
 
 Related sections: [8.4 — Dependency Scanning](#84-dependency-scanning); [8.5 — Container Image Scanning](#85-container-image-scanning).
 
@@ -401,6 +401,8 @@ Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy ke
 - Third-party GitHub Actions **SHOULD** be pinned to a specific commit SHA rather than a mutable tag (e.g., `actions/checkout@<sha>` instead of `actions/checkout@v4`).
 - Projects **SHOULD** restrict allowed GitHub Actions to actions created by GitHub and verified creators, or to an explicit allowlist maintained by the project. See the [OpenSSF Scorecard `Pinned-Dependencies` check](https://github.com/ossf/scorecard/blob/main/docs/checks.md#pinned-dependencies).
 
+> **Exemplary implementation:** The [Open Component Model CI workflows](https://github.com/open-component-model/open-component-model/tree/main/.github/workflows) demonstrate SHA-pinned actions, minimal `GITHUB_TOKEN` permissions with per-job escalation, and safe `pull_request_target` handling.
+
 ### 10.3 Branch Protection
 
 | Priority | Resolution      | Owner |
@@ -459,13 +461,7 @@ Projects **SHOULD** require that maintainer candidates:
 |------------|-----------------|-------|
 | **SHOULD** | ASAP (≤90 days) | TSC   |
 
-Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities. Examples of acceptable tools include [CodeQL](https://codeql.github.com/) and [SonarQube](https://www.sonarsource.com/products/sonarqube/).
-
-Projects **SHOULD** define a severity threshold for SAST findings (e.g., "Critical and High") and **SHOULD** fail or gate the CI pipeline when findings at or above the threshold are detected. Findings below the threshold **SHOULD** be tracked and triaged but need not block merges.
-
-Projects **SHOULD** implement automated tests (unit, integration) as part of their CI pipeline to validate code correctness and prevent regressions.
-
-> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-06.01` and `OSPS-VM-06.02` (Level 3) require projects to define a threshold for SAST findings and automatically block changes that violate it.
+Projects **SHOULD** enable static application security testing (SAST) — such as [CodeQL](https://codeql.github.com/) or [SonarQube](https://www.sonarsource.com/products/sonarqube/) — to detect code-level vulnerabilities. Projects **SHOULD** define a severity threshold (e.g., "Critical and High") and gate the CI pipeline on it. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-06.01` and `OSPS-VM-06.02` (Level 3).
 
 For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Scanning](#84-dependency-scanning).
 
@@ -503,6 +499,8 @@ The assessment does not need to be formal; a section in the project's documentat
 Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/scorecard) on all repositories containing publishable code. Scorecard provides automated checks for many of the requirements in this document and the [Project Guidelines](../project-guidelines/project-guidelines.md), including branch protection, dependency scanning, CI permissions, and vulnerability disclosure.
 
 Projects **MAY** integrate Scorecard into their CI pipeline via the [Scorecard GitHub Action](https://github.com/ossf/scorecard-action) to receive continuous feedback on security posture.
+
+> **Exemplary implementation:** The [Open Component Model Scorecard workflow](https://github.com/open-component-model/open-component-model/blob/main/.github/workflows/openssf-scorecard.yml) runs Scorecard with SARIF upload to the code-scanning dashboard.
 
 Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 — Dependency Scanning](#84-dependency-scanning); [10.2 — CI/CD Security](#102-cicd-security).
 
