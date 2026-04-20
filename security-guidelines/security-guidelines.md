@@ -157,7 +157,7 @@ Each project's TSC **MUST** designate at least two maintainers as security conta
 
 Projects **MUST** provide an initial response to a vulnerability report within **14 calendar days** of receiving it, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) passing-level requirement. The response **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory, GitLab confidential issue, or encrypted email).
 
-Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits.
+Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits, in line with the [OpenSSF Vulnerability Disclosure Guide](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md).
 
 ### 6.2 Triage and Severity Assessment
 
