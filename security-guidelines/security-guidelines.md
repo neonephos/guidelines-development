@@ -13,7 +13,7 @@
       * [5.1.3 Other Platforms and Self-Hosted Setups](#513-other-platforms-and-self-hosted-setups)
     * [5.2 SECURITY.md](#52-securitymd)
   * [6. Vulnerability Response Process](#6-vulnerability-response-process)
-    * [6.1 Acknowledgement](#61-acknowledgement)
+    * [6.1 Initial Response](#61-initial-response)
     * [6.2 Triage and Severity Assessment](#62-triage-and-severity-assessment)
     * [6.3 Fix Coordination](#63-fix-coordination)
     * [6.4 CVE Assignment](#64-cve-assignment)
@@ -24,9 +24,7 @@
     * [8.1 Artifact Signing](#81-artifact-signing)
     * [8.2 Build Provenance (SLSA)](#82-build-provenance-slsa)
     * [8.3 Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom)
-    * [8.4 Dependency Scanning](#84-dependency-scanning)
-    * [8.5 Container Image Scanning](#85-container-image-scanning)
-    * [8.6 License Compliance Scanning](#86-license-compliance-scanning)
+    * [8.4 Software Composition Analysis (SCA)](#84-software-composition-analysis-sca)
   * [9. Security Transparency](#9-security-transparency)
   * [10. Operational Security Controls](#10-operational-security-controls)
     * [10.1 Authentication](#101-authentication)
@@ -45,9 +43,9 @@
 
 This document defines the security guidelines for projects governed by the **NeoNephos Foundation**. It establishes requirements for vulnerability disclosure, incident response, supply chain security, and operational security controls that all NeoNephos projects must follow.
 
-These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [Section 15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
+These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [§15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
 
-These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). Rather than duplicating those standards, this document defines NeoNephos-specific requirements (such as response SLAs and conformance tiers) and provides platform-specific guidance that generic standards cannot offer. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
+These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). This document adopts OpenSSF standards as the baseline and adds NeoNephos-specific requirements only where generic standards do not provide concrete guidance — such as severity-based response SLAs, platform-specific implementation paths, and a conformance model tied to foundation lifecycle stages. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
 
 Related sections: [2 — Normative Language](#2-normative-language); [3 — Conformance Model](#3-conformance-model); [4 — Scope](#4-scope).
 
@@ -74,6 +72,8 @@ This document covers:
 - **Vulnerability disclosure and response**: How projects receive, handle, and disclose security vulnerabilities.
 - **Supply chain security**: Requirements for signing, provenance, SBOMs, and dependency management of released artifacts.
 - **Operational security controls**: Authentication, CI/CD security, access governance, code scanning, and data retention requirements.
+
+For the purposes of this document, a repository contains **publishable code or artifacts** if it produces software that is distributed to users or other systems — including libraries, binaries, container images, Helm charts, CLI tools, SDKs, or any package published to a registry. Repositories that contain only documentation, governance files, or meeting notes are excluded.
 
 This document does **not** cover:
 
@@ -153,13 +153,15 @@ Related sections: [6 — Vulnerability Response Process](#6-vulnerability-respon
 
 Each project's TSC **MUST** designate at least two maintainers as security contacts responsible for handling vulnerability reports. These contacts **MUST** be documented in the project's `SECURITY.md`.
 
-### 6.1 Acknowledgement
+### 6.1 Initial Response
 
-Projects **MUST** acknowledge receipt of a vulnerability report within **3 business days**. The acknowledgement **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory, GitLab confidential issue, or encrypted email).
+Projects **MUST** provide an initial response to a vulnerability report within **14 calendar days** of receiving it, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) passing-level requirement. The response **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory, GitLab confidential issue, or encrypted email).
+
+Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits.
 
 ### 6.2 Triage and Severity Assessment
 
-Projects **MUST** perform an initial triage within **7 calendar days** of receiving a report. Triage **MUST** include:
+The initial response **MUST** include — or be followed promptly by — a triage that covers:
 
 1. Validation: confirming whether the report describes a genuine vulnerability.
 2. Severity assessment using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later.
@@ -169,7 +171,7 @@ The reporter **SHOULD** be informed of the triage outcome and the planned remedi
 
 ### 6.3 Fix Coordination
 
-Fix development **SHOULD** happen in a private fork, draft advisory, or other non-public workspace to prevent premature disclosure. The fix **MUST** be reviewed by at least one additional maintainer before merging.
+Fix development **SHOULD** happen in a private fork, draft advisory, or other non-public workspace to prevent premature disclosure (the **MUST** requirement in the Section 6 conformance table applies to designating security contacts and following the response process; the choice of private workspace is **RECOMMENDED**). The fix **MUST** be reviewed by at least one additional maintainer before merging.
 
 > **Platform-specific guidance:** On GitHub, use a [temporary private fork within a Security Advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-repository-security-vulnerability). On GitLab, use a [confidential merge request](https://docs.gitlab.com/ee/user/project/merge_requests/confidential.html). On other platforms, use a private branch or out-of-band patch review.
 
@@ -233,6 +235,7 @@ Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.o
 
 - **Fix SLA**: Time from triage completion to a fix being merged.
 - **Disclosure SLA**: Time from triage completion to publishing a security advisory (see [Section 6.5](#65-coordinated-disclosure)). The disclosure SLA **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
+- When the fix and disclosure SLAs coincide (as with Medium severity), the fix and disclosure **MAY** happen simultaneously. If the fix is not ready when the disclosure SLA expires, the TSC **MUST** publish a mitigation advisory and disclose per [Section 6.5](#65-coordinated-disclosure).
 
 If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
 
@@ -252,7 +255,7 @@ Related sections: [6 — Vulnerability Response Process](#6-vulnerability-respon
 
 Projects **SHOULD** sign all published release artifacts (container images, binaries, packages) using [Sigstore cosign](https://docs.sigstore.dev/cosign/signing/overview/) or an equivalent signing mechanism. Signing **SHOULD** be integrated into the CI/CD pipeline.
 
-> **Practical note:** Artifact signing, build provenance, and SBOM generation (Sections 8.1–8.3) are intended to be adopted incrementally. Projects **SHOULD** prioritize dependency scanning ([Section 8.4](#84-dependency-scanning)) first, as it provides the highest security value with the least effort. The remaining supply chain practices can be introduced as the project matures and publishes artifacts to external consumers.
+> **Practical note:** Artifact signing, build provenance, and SBOM generation (Sections 8.1–8.3) are intended to be adopted incrementally. Projects **SHOULD** prioritize software composition analysis ([Section 8.4](#84-software-composition-analysis-sca)) first, as it provides the highest security value with the least effort. The remaining supply chain practices can be introduced as the project matures and publishes artifacts to external consumers.
 
 ### 8.2 Build Provenance (SLSA)
 
@@ -270,49 +273,34 @@ For implementation guidance and tooling options, see the [SLSA specification](ht
 |------------|----------------------------------------------|-------|
 | **SHOULD** | When publishing artifacts to external consumers | TSC   |
 
-Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each published release artifact. SBOMs **MUST** use either [SPDX](https://spdx.dev/) or [CycloneDX](https://cyclonedx.org/) format.
+Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each published release artifact. When an SBOM is published, it **MUST** use either [SPDX](https://spdx.dev/) or [CycloneDX](https://cyclonedx.org/) format.
 
 SBOMs **SHOULD** be published alongside release artifacts (e.g., attached to GitHub releases or pushed to the OCI registry as a referrer).
 
-### 8.4 Dependency Scanning
+### 8.4 Software Composition Analysis (SCA)
 
 | Priority | Resolution      | Owner |
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** enable automated dependency scanning to detect known vulnerabilities in direct and transitive dependencies for all repositories containing publishable code. Examples of acceptable tools include [Dependabot](https://docs.github.com/en/code-security/dependabot), [Renovate](https://docs.renovatebot.com/), or equivalent.
+Projects **MUST** enable automated software composition analysis (SCA) covering vulnerability detection, container image scanning, and license compliance for all repositories containing publishable code. Modern SCA tools — such as [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), [Dependabot](https://docs.github.com/en/code-security/dependabot), or [Renovate](https://docs.renovatebot.com/) — typically cover multiple of these concerns in a single scan. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) and `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1).
 
-Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
+**Dependency vulnerability scanning** (**MUST**)
 
-Related sections: [Project Guidelines §15.3.2 — Supplemental Compliance](../project-guidelines/project-guidelines.md#1532-supplemental-compliance); [Project Guidelines §6 — Technical and Development Practices](../project-guidelines/project-guidelines.md#6-technical-and-development-practices).
+- Projects **MUST** scan direct and transitive dependencies for known vulnerabilities.
+- Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
 
-### 8.5 Container Image Scanning
+**Container image scanning** (**SHOULD** — when publishing container images)
 
-| Priority   | Resolution                                   | Owner |
-|------------|----------------------------------------------|-------|
-| **SHOULD** | When publishing container images              | TSC   |
+- Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry, integrated into the CI/CD pipeline.
+- Projects **SHOULD** fail the pipeline (or at minimum generate a warning) when vulnerabilities at or above a project-defined severity threshold are detected (e.g., "Critical and High").
 
-Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry. Image scanning **SHOULD** be integrated into the CI/CD pipeline so that every built image is evaluated before publication.
+**License compliance scanning** (**SHOULD**)
 
-Projects **SHOULD** fail the pipeline (or at minimum generate a warning) when vulnerabilities at or above a project-defined severity threshold are detected. Projects **SHOULD** define this threshold explicitly (e.g., "Critical and High").
+- Projects **SHOULD** automate license scanning of all direct and transitive dependencies to detect incompatible, unknown, or unlicensed components.
+- Projects **SHOULD** define an allowlist of acceptable licenses (e.g., MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause) and flag any dependency whose license is not on the allowlist. Dependencies with incompatible or unknown licenses **SHOULD** be resolved before release.
 
-Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), or [OSV-Scanner](https://google.github.io/osv-scanner/). See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) for additional guidance on SCA thresholds and policy evaluation.
-
-Related sections: [8.3 — Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom); [8.4 — Dependency Scanning](#84-dependency-scanning).
-
-### 8.6 License Compliance Scanning
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-Projects **SHOULD** automate license scanning of all direct and transitive dependencies to detect incompatible, unknown, or unlicensed components. License scanning **SHOULD** be integrated into the CI/CD pipeline.
-
-Projects **SHOULD** define an allowlist of acceptable licenses (e.g., OSI-approved permissive licenses such as MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause) and flag any dependency whose license is not on the allowlist. Dependencies with incompatible or unknown licenses **SHOULD** be resolved before release.
-
-Examples of acceptable tools include [Trivy](https://github.com/aquasecurity/trivy), [REUSE](https://reuse.software/), or equivalent. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1) and `OSPS-VM-05.01`, `OSPS-VM-05.02` (Level 3) for alignment with broader license compliance requirements.
-
-Related sections: [8.4 — Dependency Scanning](#84-dependency-scanning); [8.5 — Container Image Scanning](#85-container-image-scanning).
+Related sections: [8.3 — Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom); [Project Guidelines §15.3.2 — Supplemental Compliance](../project-guidelines/project-guidelines.md#1532-supplemental-compliance).
 
 ---
 
@@ -324,7 +312,7 @@ Related sections: [8.4 — Dependency Scanning](#84-dependency-scanning); [8.5 �
 
 Projects **MUST** publish security advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via the platform's advisory mechanism. On GitHub, use [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories). On GitLab, use [project-level vulnerability records](https://docs.gitlab.com/ee/user/application_security/vulnerabilities/). On other platforms, publish advisories on the project website or mailing list and link to them from `SECURITY.md`.
 
-Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions.
+Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions. If a CVE has not yet been assigned at the time of publication, the advisory **SHOULD** note that CVE assignment is pending and be updated once the identifier is issued.
 
 Release changelogs **SHOULD** explicitly flag security-relevant modifications (fixes, dependency updates addressing CVEs, configuration changes with security impact). See [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-BR-04.01` (Level 2).
 
@@ -346,13 +334,17 @@ This section defines security-relevant operational controls for NeoNephos projec
 
 Projects **MUST** enforce Two-Factor Authentication (2FA) for all organization members.
 
-Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
+Projects **SHOULD** disable SSH deploy keys at the organization level (strengthening the Project Guidelines' position, which does not enforce a global policy). Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
+
+Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance).
 
 ### 10.2 CI/CD Security
 
 | Priority | Resolution      | Owner |
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
+
+*The priority above applies to the core CI/CD controls (self-hosted runners, fork workflows, workflow permissions). Sub-controls below carry their own conformance tables.*
 
 **Self-hosted runners**
 
@@ -402,6 +394,8 @@ Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy ke
 - Projects **SHOULD** restrict allowed GitHub Actions to actions created by GitHub and verified creators, or to an explicit allowlist maintained by the project. See the [OpenSSF Scorecard `Pinned-Dependencies` check](https://github.com/ossf/scorecard/blob/main/docs/checks.md#pinned-dependencies).
 
 > **Exemplary implementation:** The [Open Component Model CI workflows](https://github.com/open-component-model/open-component-model/tree/main/.github/workflows) demonstrate SHA-pinned actions, minimal `GITHUB_TOKEN` permissions with per-job escalation, and safe `pull_request_target` handling.
+
+Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance); [8 — Supply Chain Security](#8-supply-chain-security).
 
 ### 10.3 Branch Protection
 
@@ -463,7 +457,7 @@ Projects **SHOULD** require that maintainer candidates:
 
 Projects **SHOULD** enable static application security testing (SAST) — such as [CodeQL](https://codeql.github.com/) or [SonarQube](https://www.sonarsource.com/products/sonarqube/) — to detect code-level vulnerabilities. Projects **SHOULD** define a severity threshold (e.g., "Critical and High") and gate the CI pipeline on it. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-06.01` and `OSPS-VM-06.02` (Level 3).
 
-For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Scanning](#84-dependency-scanning).
+For dependency-level vulnerability scanning, see [Section 8.4 — Software Composition Analysis](#84-software-composition-analysis-sca).
 
 ### 10.7 Data Retention
 
@@ -471,8 +465,10 @@ For dependency-level vulnerability scanning, see [Section 8.4 — Dependency Sca
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-- **Private repositories**: Artifact and log retention **MUST** be configured to 180 days.
-- **Public repositories**: Retention defaults to 90 days (GitHub platform limitation).
+- **Private repositories**: Artifact and log retention **MUST** be configured to at least 180 days.
+- **Public repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days. On platforms where the maximum is lower (e.g., GitHub limits public repositories to 90 days), projects **MUST** configure the platform maximum.
+
+Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance).
 
 ### 10.8 Security Assessment
 
@@ -502,15 +498,11 @@ Projects **MAY** integrate Scorecard into their CI pipeline via the [Scorecard G
 
 > **Exemplary implementation:** The [Open Component Model Scorecard workflow](https://github.com/open-component-model/open-component-model/blob/main/.github/workflows/openssf-scorecard.yml) runs Scorecard with SARIF upload to the code-scanning dashboard.
 
-Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 — Dependency Scanning](#84-dependency-scanning); [10.2 — CI/CD Security](#102-cicd-security).
+Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 — Software Composition Analysis](#84-software-composition-analysis-sca); [10.2 — CI/CD Security](#102-cicd-security).
 
 ---
 
 ## 11. Acknowledgements
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤30 days) | TSC   |
 
 Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity. Acknowledgement **SHOULD** be included in the published security advisory and **MAY** also be included in release notes.
 
