@@ -3,6 +3,9 @@
 *This is a template for a SECURITY.md file. Adjust the placeholders (marked with `<...>`) to match
 your project. Remove this italic guidance text before publishing. For projects with multiple
 repositories, each repository containing publishable code or artifacts MUST have its own SECURITY.md.
+On GitHub, a SECURITY.md placed in the organization's `.github` repository serves as the default for
+all repositories that do not have their own — this satisfies the per-repository requirement, but
+cannot include repository-specific direct links (see Option A below).
 See the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for the full
 set of requirements.*
 
@@ -50,11 +53,11 @@ You may report vulnerabilities via email to **\<security contact email\>**.
 a link to the public key or a fingerprint. Projects SHOULD also publish a
 [`security.txt`](https://securitytxt.org/) file following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116).*
 
-### Alternative Contact
+### Fallback Contact
 
-*If your project offers an additional private reporting channel beyond the primary one above
-(e.g., email as fallback for a GitHub/GitLab-hosted project), list it here.
-Otherwise, remove this section.*
+*If your project uses Option A or Option B above as the primary channel, add an email fallback here
+for reporters who do not have an account on the hosting platform. If you chose Option C as your
+primary channel, remove this section to avoid duplication.*
 
 You may also report vulnerabilities via email to **\<security contact email\>**.
 
@@ -64,10 +67,12 @@ The following maintainers are responsible for handling vulnerability reports:
 
 | Name | Handle | Role |
 |------|--------|------|
-| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Security Officer |
-| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Maintainer |
+| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Lead Security Contact |
+| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Security Contact |
 
-*Adjust the profile links to match your hosting platform.*
+*The [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md#6-vulnerability-response-process)
+require at least two security contacts. Add more rows as needed but do not reduce below two.
+Adjust the profile links to match your hosting platform.*
 
 ## Supported Versions
 
@@ -92,22 +97,21 @@ text before publishing. Examples:*
 
 This project follows the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for vulnerability handling. In summary:
 
-- **Acknowledgement**: We will acknowledge your report within **3 business days**.
-- **Triage**: We will assess the severity (using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document)) within **7 calendar days**.
-- **Embargo**: Vulnerability details will remain confidential for up to **90 days** while a fix is developed.
+- **Initial response**: We will respond to your report within **14 calendar days**, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) requirement.
+- **Embargo**: Vulnerability details will remain confidential for up to **90 days** while a fix is developed. Fix timelines (see table below) are measured from triage completion.
 - **Disclosure**: Once a fix is available, we will publish a security advisory with full details.
 
 ### Severity Response SLAs
 
-| Severity | CVSS Score | Fix Target (calendar days) |
-|----------|------------|----------------------------|
-| Critical | 9.0 – 10.0 | ≤ 7 days |
-| High | 7.0 – 8.9 | ≤ 30 days |
-| Medium | 4.0 – 6.9 | ≤ 90 days |
-| Low | 0.1 – 3.9 | Best effort |
+| Severity | CVSS Score | Fix Target | Disclosure Target |
+|----------|------------|------------|-------------------|
+| Critical | 9.0 – 10.0 | ≤ 7 days  | ≤ 14 days         |
+| High | 7.0 – 8.9 | ≤ 30 days     | ≤ 30 days         |
+| Medium | 4.0 – 6.9 | ≤ 90 days   | ≤ 90 days         |
+| Low | 0.1 – 3.9 | Best effort    | Best effort       |
 
-*If your project cannot meet a target, communicate an updated timeline to the reporter and publish
-a workaround or mitigation advisory. Transparency matters more than speed.*
+*Timelines are in calendar days, measured from triage completion. For the full SLA definitions, see the
+[NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-slas).*
 
 ## Disclosure Policy
 
