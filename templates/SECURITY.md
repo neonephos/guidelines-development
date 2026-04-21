@@ -101,17 +101,17 @@ This project follows the [NeoNephos Security Guidelines](../security-guidelines/
 - **Embargo**: Vulnerability details will remain confidential for up to **90 days** while a fix is developed. Fix timelines (see table below) are measured from triage completion.
 - **Disclosure**: Once a fix is available, we will publish a security advisory with full details.
 
-### Severity Response SLAs
+### Severity Response Targets
 
 | Severity | CVSS Score | Fix Target | Disclosure Target |
 |----------|------------|------------|-------------------|
-| Critical | 9.0 – 10.0 | ≤ 7 days  | ≤ 14 days         |
-| High | 7.0 – 8.9 | ≤ 30 days     | ≤ 30 days         |
+| Critical | 9.0 – 10.0 | ≤ 14 days | ≤ 30 days         |
+| High | 7.0 – 8.9 | ≤ 30 days     | ≤ 60 days         |
 | Medium | 4.0 – 6.9 | ≤ 90 days   | ≤ 90 days         |
 | Low | 0.1 – 3.9 | Best effort    | Best effort       |
 
-*Timelines are in calendar days, measured from triage completion. For the full SLA definitions, see the
-[NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-slas).*
+*Timelines are in calendar days, measured from triage completion. For the full response target definitions, see the
+[NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-targets).*
 
 ## Disclosure Policy
 
