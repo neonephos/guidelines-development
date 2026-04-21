@@ -19,7 +19,7 @@
     * [6.4 CVE Assignment](#64-cve-assignment)
     * [6.5 Coordinated Disclosure](#65-coordinated-disclosure)
     * [6.6 Post-Disclosure](#66-post-disclosure)
-  * [7. Severity Classification and Response SLAs](#7-severity-classification-and-response-slas)
+  * [7. Severity Classification and Response Targets](#7-severity-classification-and-response-targets)
   * [8. Supply Chain Security](#8-supply-chain-security)
     * [8.1 Artifact Signing](#81-artifact-signing)
     * [8.2 Build Provenance (SLSA)](#82-build-provenance-slsa)
@@ -45,7 +45,7 @@ This document defines the security guidelines for projects governed by the **Neo
 
 These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [§15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
 
-These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). This document adopts OpenSSF standards as the baseline and adds NeoNephos-specific requirements only where generic standards do not provide concrete guidance — such as severity-based response SLAs, platform-specific implementation paths, and a conformance model tied to foundation lifecycle stages. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
+These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). This document adopts OpenSSF standards as the baseline and adds NeoNephos-specific requirements only where generic standards do not provide concrete guidance — such as severity-based response targets, platform-specific implementation paths, and a conformance model tied to foundation lifecycle stages. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
 
 Related sections: [2 — Normative Language](#2-normative-language); [3 — Conformance Model](#3-conformance-model); [4 — Scope](#4-scope).
 
@@ -141,7 +141,7 @@ A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md
 
 > **Exemplary implementation:** [Gardener's SECURITY.md](https://github.com/gardener/.github/blob/main/SECURITY.md) includes named security contacts, a detailed disclosure process, and severity-based handling.
 
-Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [7 — Severity Classification and Response SLAs](#7-severity-classification-and-response-slas).
+Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [7 — Severity Classification and Response Targets](#7-severity-classification-and-response-targets).
 
 ---
 
@@ -161,11 +161,11 @@ Projects **SHOULD** acknowledge receipt within **2 business days** where maintai
 
 ### 6.2 Triage and Severity Assessment
 
-The initial response **MUST** include — or be followed promptly by — a triage that covers:
+The initial response **SHOULD** include — or be followed promptly by — a triage that covers:
 
 1. Validation: confirming whether the report describes a genuine vulnerability.
-2. Severity assessment using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later.
-3. Assignment of a severity level per [Section 7](#7-severity-classification-and-response-slas).
+2. Severity assessment using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later, where practical.
+3. Assignment of a severity level per [Section 7](#7-severity-classification-and-response-targets).
 
 The reporter **SHOULD** be informed of the triage outcome and the planned remediation timeline.
 
@@ -214,32 +214,34 @@ After public disclosure:
 - The CVE and advisory **SHOULD** be referenced in the release notes of the patched version.
 - Projects **SHOULD** conduct a retrospective for Critical and High severity vulnerabilities to identify process improvements.
 
-Related sections: [5 — Security Contact per Project](#5-security-contact-per-project); [7 — Severity Classification and Response SLAs](#7-severity-classification-and-response-slas); [9 — Security Transparency](#9-security-transparency).
+Related sections: [5 — Security Contact per Project](#5-security-contact-per-project); [7 — Severity Classification and Response Targets](#7-severity-classification-and-response-targets); [9 — Security Transparency](#9-security-transparency).
 
 ---
 
-## 7. Severity Classification and Response SLAs
+## 7. Severity Classification and Response Targets
 
 | Priority | Resolution      | Owner |
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later and apply the following response SLAs:
+Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** exercise judgment when the CVSS score does not fully reflect the practical impact of a vulnerability.
 
-| Severity     | CVSS Score | Fix SLA                | Disclosure SLA         |
+Projects **MUST** publish a security advisory within the 90-day disclosure ceiling defined in [Section 6.5](#65-coordinated-disclosure). Within that ceiling, projects **SHOULD** aim for the following response targets:
+
+| Severity     | CVSS Score | Fix Target             | Disclosure Target      |
 |--------------|------------|------------------------|------------------------|
-| **Critical** | 9.0 – 10.0 | ≤ 7 calendar days     | ≤ 14 calendar days     |
-| **High**     | 7.0 – 8.9  | ≤ 30 calendar days    | ≤ 30 calendar days     |
+| **Critical** | 9.0 – 10.0 | ≤ 14 calendar days    | ≤ 30 calendar days     |
+| **High**     | 7.0 – 8.9  | ≤ 30 calendar days    | ≤ 60 calendar days     |
 | **Medium**   | 4.0 – 6.9  | ≤ 90 calendar days    | ≤ 90 calendar days     |
 | **Low**      | 0.1 – 3.9  | Best effort            | Best effort            |
 
-- **Fix SLA**: Time from triage completion to a fix being merged.
-- **Disclosure SLA**: Time from triage completion to publishing a security advisory (see [Section 6.5](#65-coordinated-disclosure)). The disclosure SLA **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
-- When the fix and disclosure SLAs coincide (as with Medium severity), the fix and disclosure **MAY** happen simultaneously. If the fix is not ready when the disclosure SLA expires, the TSC **MUST** publish a mitigation advisory and disclose per [Section 6.5](#65-coordinated-disclosure).
+- **Fix Target**: Time from triage completion to a fix being merged.
+- **Disclosure Target**: Time from triage completion to publishing a security advisory (see [Section 6.5](#65-coordinated-disclosure)). The disclosure **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
+- When the fix and disclosure targets coincide (as with Medium severity), the fix and disclosure **MAY** happen simultaneously. If the fix is not ready when the disclosure target expires, the TSC **SHOULD** publish a mitigation advisory and disclose per [Section 6.5](#65-coordinated-disclosure).
 
-If a project cannot meet a Fix SLA, the TSC **MUST** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
+If a project cannot meet a fix target, the TSC **SHOULD** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
 
-> **Rationale:** These SLAs are aligned with industry practice. The 90-day embargo follows the [OpenSSF Model Outbound Vulnerability Disclosure Policy](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md) and is consistent with CNCF projects such as Envoy. The severity-based fix timelines are comparable to those used by GitLab and Chainguard, adjusted from "patch availability" to "triage completion" to reflect the realities of volunteer-maintained open source projects.
+> **Rationale:** The 90-day disclosure ceiling is a **MUST** aligned with the [OpenSSF Model Outbound Vulnerability Disclosure Policy](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md), Google Project Zero, and CNCF projects such as Envoy. The severity-based fix targets are **SHOULD**-level goals — no major open source foundation (including CNCF) mandates hard, severity-tiered fix SLAs, and volunteer-maintained projects cannot guarantee timelines the way commercial vendors can. The targets are comparable to those used by GitLab and Chainguard and provide a reasonable benchmark for projects to measure against.
 
 Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [6.5 — Coordinated Disclosure](#65-coordinated-disclosure).
 
@@ -283,7 +285,9 @@ SBOMs **SHOULD** be published alongside release artifacts (e.g., attached to Git
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-Projects **MUST** enable automated software composition analysis (SCA) covering vulnerability detection, container image scanning, and license compliance for all repositories containing publishable code. Modern SCA tools — such as [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), [Dependabot](https://docs.github.com/en/code-security/dependabot), or [Renovate](https://docs.renovatebot.com/) — typically cover multiple of these concerns in a single scan. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) and `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1).
+*The priority above applies to dependency vulnerability scanning. Container image scanning and license compliance scanning carry their own conformance levels below.*
+
+Projects **SHOULD** enable automated software composition analysis (SCA) covering vulnerability detection, container image scanning, and license compliance for all repositories containing publishable code. Modern SCA tools — such as [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), [Dependabot](https://docs.github.com/en/code-security/dependabot), or [Renovate](https://docs.renovatebot.com/) — typically cover multiple of these concerns in a single scan. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) and `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1).
 
 **Dependency vulnerability scanning** (**MUST**)
 
@@ -344,13 +348,13 @@ Related sections: [Project Guidelines §15.3 — Security and Compliance](../pro
 |----------|-----------------|-------|
 | **MUST** | ASAP (≤30 days) | TSC   |
 
-*The priority above applies to the core CI/CD controls (self-hosted runners, fork workflows, workflow permissions). Sub-controls below carry their own conformance tables.*
+*The priority above applies to the core CI/CD controls (fork workflows, workflow permissions). Sub-controls below carry their own conformance levels.*
 
 **Self-hosted runners**
 
-- Repository-level self-hosted runners **MUST NOT** be enabled.
-- Organization-level self-hosted runners **SHOULD NOT** be enabled unless necessary, and **MUST** be approved by GitHub Enterprise Cloud account administrators who record the decision via a TAC vote.
-- *Rationale*: GitHub-hosted runners are preferred; self-hosted runners require careful hardening to prevent exploitation.
+- Repository-level self-hosted runners **SHOULD NOT** be enabled. Organization-level policies **SHOULD** be used to prevent repositories from registering their own runners.
+- Organization-level self-hosted runners **SHOULD NOT** be enabled unless necessary, and **SHOULD** be approved by GitHub Enterprise Cloud account administrators who record the decision via a TAC vote.
+- *Rationale*: GitHub-hosted runners are preferred; self-hosted runners require careful hardening to prevent exploitation. Centralizing runner management at the organization level improves governance and auditability.
 
 **Fork pull-request workflows**
 
@@ -360,8 +364,8 @@ Related sections: [Project Guidelines §15.3 — Security and Compliance](../pro
 **Workflow permissions**
 
 - The default `GITHUB_TOKEN` permission **MUST** be set to "Read repository contents and packages."
-- Write access **MUST** be explicitly requested via the `permissions` key in workflow files.
-- *Rationale*: Limits blast radius by preventing workflows from gaining unnecessary write access.
+- Write access **SHOULD** be explicitly requested via the `permissions` key in workflow files.
+- *Rationale*: Limits blast radius by preventing workflows from gaining unnecessary write access. See [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-AC-04.01` (Level 2) for default permissions and `OSPS-AC-04.02` (Level 3) for per-job scoping.
 
 **Credential handling**
 
@@ -371,7 +375,7 @@ Related sections: [Project Guidelines §15.3 — Security and Compliance](../pro
 
 - Projects **SHOULD** use workload identities (OIDC) or short-lived GitHub access tokens for interactions with external services.
 - Where workload identity is not supported, projects **SHOULD** use fine-grained personal access tokens with the minimum required scopes.
-- Temporary access tokens created for exceptional local batch jobs **MUST** be deleted immediately after use and **MUST NOT** exceed a lifetime of 6 hours.
+- Temporary access tokens created for exceptional local batch jobs **MUST** be deleted immediately after use and **SHOULD NOT** exceed a short lifetime (e.g., 6 hours).
 - Projects **SHOULD** conduct package releases via CI/CD pipelines (GitHub Actions recommended) rather than from local machines. See also [Section 8.1 — Artifact Signing](#81-artifact-signing) and [Section 8.2 — Build Provenance](#82-build-provenance-slsa).
 
 **Pipeline input sanitization**
@@ -461,12 +465,12 @@ For dependency-level vulnerability scanning, see [Section 8.4 — Software Compo
 
 ### 10.7 Data Retention
 
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
+| Priority   | Resolution      | Owner |
+|------------|-----------------|-------|
+| **SHOULD** | ASAP (≤90 days) | TSC   |
 
-- **Private repositories**: Artifact and log retention **MUST** be configured to at least 180 days.
-- **Public repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days. On platforms where the maximum is lower (e.g., GitHub limits public repositories to 90 days), projects **MUST** configure the platform maximum.
+- **Private repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days.
+- **Public repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days. On platforms where the maximum is lower (e.g., GitHub limits public repositories to 90 days), projects **SHOULD** configure the platform maximum.
 
 Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance).
 
