@@ -9,6 +9,10 @@ cannot include repository-specific direct links (see Option A below).
 See the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for the full
 set of requirements.*
 
+*Note: The relative links below (e.g., `../security-guidelines/...`) assume this file lives in a
+repository alongside the guidelines. If placed in an organization-level `.github` repository, adjust
+links to point to the guidelines repository.*
+
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability in **\<Project Name\>**, please report it responsibly
@@ -49,15 +53,13 @@ Please report vulnerabilities as a **confidential issue**:
 
 You may report vulnerabilities via email to **\<security contact email\>**.
 
-*If your project publishes a PGP/GPG key for encrypted communication, mention it here and provide
-a link to the public key or a fingerprint. Projects SHOULD also publish a
-[`security.txt`](https://securitytxt.org/) file following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116).*
+*If your project publishes a PGP/GPG key for encrypted communication, mention it here. Projects
+SHOULD also publish a [`security.txt`](https://securitytxt.org/) file per [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116).*
 
 ### Fallback Contact
 
-*If your project uses Option A or Option B above as the primary channel, add an email fallback here
-for reporters who do not have an account on the hosting platform. If you chose Option C as your
-primary channel, remove this section to avoid duplication.*
+*If your project uses Option A or Option B as the primary channel, add an email fallback here for
+reporters without an account on that platform. Remove this section if you chose Option C as primary.*
 
 You may also report vulnerabilities via email to **\<security contact email\>**.
 
@@ -71,15 +73,14 @@ The following maintainers are responsible for handling vulnerability reports:
 | *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Security Contact |
 
 *The [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md#6-vulnerability-response-process)
-require at least two security contacts. Add more rows as needed but do not reduce below two.
+require designated security contacts. Add rows as needed.
 Adjust the profile links to match your hosting platform.*
 
 ## Supported Versions
 
-*State clearly which versions receive security updates. This should express a version support policy
-(e.g., "the latest two minor releases") rather than naming specific branches. Choose whichever format
-fits your project — a table, a simple sentence, or a link to your release policy. Remove this guidance
-text before publishing. Examples:*
+*State which versions receive security updates — prefer a version support policy (e.g., "the latest
+two minor releases") over naming specific branches. Choose any format that fits your project. Remove
+this guidance text before publishing. Examples:*
 
 **Option A — Single active branch (common for early-stage projects):**
 
@@ -110,8 +111,7 @@ This project follows the [NeoNephos Security Guidelines](../security-guidelines/
 | Medium | 4.0 – 6.9 | ≤ 90 days   | ≤ 90 days         |
 | Low | 0.1 – 3.9 | Best effort    | Best effort       |
 
-*Timelines are in calendar days, measured from triage completion. For the full response target definitions, see the
-[NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-targets).*
+*Timelines are in calendar days, measured from triage completion. For the full definitions, see the [NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-targets).*
 
 ## Disclosure Policy
 
@@ -125,7 +125,6 @@ We are committed to crediting reporters in our security advisories unless you pr
 
 ## Past Security Advisories
 
-*Optional — include this section only if your project has published advisories. Remove it entirely
-for new projects. Adjust the link to match your hosting platform.*
+*Replace with a link to your platform's published advisories page, or list "None yet" for new projects.*
 
-See [Published Security Advisories](https://github.com/<org>/<repo>/security/advisories?state=published).
+None yet. See [Published Security Advisories](https://github.com/<org>/<repo>/security/advisories?state=published) once advisories are available.

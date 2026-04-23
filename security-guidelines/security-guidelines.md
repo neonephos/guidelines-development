@@ -4,13 +4,10 @@
 * [Security Guidelines — NeoNephos Foundation](#security-guidelines--neonephos-foundation)
   * [1. Introduction](#1-introduction)
   * [2. Normative Language](#2-normative-language)
-  * [3. Conformance Model](#3-conformance-model)
-  * [4. Scope](#4-scope)
+  * [3. Scope](#3-scope)
+  * [4. Quick-Start Checklist](#4-quick-start-checklist)
   * [5. Security Contact per Project](#5-security-contact-per-project)
     * [5.1 Private Vulnerability Intake Channel](#51-private-vulnerability-intake-channel)
-      * [5.1.1 GitHub](#511-github)
-      * [5.1.2 GitLab](#512-gitlab)
-      * [5.1.3 Other Platforms and Self-Hosted Setups](#513-other-platforms-and-self-hosted-setups)
     * [5.2 SECURITY.md](#52-securitymd)
   * [6. Vulnerability Response Process](#6-vulnerability-response-process)
     * [6.1 Initial Response](#61-initial-response)
@@ -25,17 +22,15 @@
     * [8.2 Build Provenance (SLSA)](#82-build-provenance-slsa)
     * [8.3 Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom)
     * [8.4 Software Composition Analysis (SCA)](#84-software-composition-analysis-sca)
-  * [9. Security Transparency](#9-security-transparency)
-  * [10. Operational Security Controls](#10-operational-security-controls)
-    * [10.1 Authentication](#101-authentication)
-    * [10.2 CI/CD Security](#102-cicd-security)
-    * [10.3 Branch Protection](#103-branch-protection)
-    * [10.4 Secret Scanning and Prevention](#104-secret-scanning-and-prevention)
-    * [10.5 Access Governance](#105-access-governance)
-    * [10.6 Code Quality and Scanning](#106-code-quality-and-scanning)
-    * [10.7 Data Retention](#107-data-retention)
-    * [10.8 Security Assessment](#108-security-assessment)
-    * [10.9 Automated Security Posture Verification](#109-automated-security-posture-verification)
+  * [9. Operational Security Controls](#9-operational-security-controls)
+    * [9.1 Authentication](#91-authentication)
+    * [9.2 CI/CD Security](#92-cicd-security)
+    * [9.3 Branch Protection](#93-branch-protection)
+    * [9.4 Secret Scanning](#94-secret-scanning)
+    * [9.5 Access Governance](#95-access-governance)
+    * [9.6 Code Quality and Scanning](#96-code-quality-and-scanning)
+    * [9.7 Security Assessment and Posture Verification](#97-security-assessment-and-posture-verification)
+  * [10. Conformance Matrix](#10-conformance-matrix)
   * [11. Acknowledgements](#11-acknowledgements)
 <!-- TOC -->
 
@@ -43,11 +38,9 @@
 
 This document defines the security guidelines for projects governed by the **NeoNephos Foundation**. It establishes requirements for vulnerability disclosure, incident response, supply chain security, and operational security controls that all NeoNephos projects must follow.
 
-These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). Some operational security controls defined here overlap with [§15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance) of the Project Guidelines; this document provides the normative requirements while the Project Guidelines retain the operational context.
+These guidelines complement the [NeoNephos Project Guidelines](../project-guidelines/project-guidelines.md), which reference this document in [Section 11 — Security](../project-guidelines/project-guidelines.md#11-security). They build on the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/), adding NeoNephos-specific requirements only where generic standards do not provide concrete guidance.
 
-These guidelines build on established open source security standards — in particular the [OpenSSF Security Baseline](https://baseline.openssf.org/), [SLSA](https://slsa.dev/), and the [OpenSSF Best Practices Badge](https://www.bestpractices.dev/). This document adopts OpenSSF standards as the baseline and adds NeoNephos-specific requirements only where generic standards do not provide concrete guidance — such as severity-based response targets, platform-specific implementation paths, and a conformance model tied to foundation lifecycle stages. Where a topic is fully covered by an external standard, this document states the requirement and references the authoritative source.
-
-Related sections: [2 — Normative Language](#2-normative-language); [3 — Conformance Model](#3-conformance-model); [4 — Scope](#4-scope).
+Each requirement carries a conformance priority (**MUST**/**SHOULD** per RFC 2119) and a resolution timeframe; see the [Conformance Matrix](#10-conformance-matrix). Enforcement follows [Project Guidelines §13a](../project-guidelines/project-guidelines.md#13a-enforcement-and-remediation).
 
 ---
 
@@ -55,32 +48,36 @@ Related sections: [2 — Normative Language](#2-normative-language); [3 — Conf
 
 The key words **MUST**, **MUST NOT**, **REQUIRED**, **SHALL**, **SHALL NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED**, **MAY**, and **OPTIONAL** in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119.html) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174.html).
 
-Related sections: [3 — Conformance Model](#3-conformance-model).
-
 ---
 
-## 3. Conformance Model
-
-This document follows the same conformance model defined in the [NeoNephos Project Guidelines, Section 3](../project-guidelines/project-guidelines.md#3-conformance-model). Each guideline carries a *conformance priority statement* and a *resolution timeframe*. Enforcement follows the process described in [Section 13a — Enforcement and Remediation](../project-guidelines/project-guidelines.md#13a-enforcement-and-remediation) of the Project Guidelines.
-
----
-
-## 4. Scope
+## 3. Scope
 
 This document covers:
 
 - **Vulnerability disclosure and response**: How projects receive, handle, and disclose security vulnerabilities.
 - **Supply chain security**: Requirements for signing, provenance, SBOMs, and dependency management of released artifacts.
-- **Operational security controls**: Authentication, CI/CD security, access governance, code scanning, and data retention requirements.
+- **Operational security controls**: Authentication, CI/CD security, access governance, and code scanning requirements.
 
 For the purposes of this document, a repository contains **publishable code or artifacts** if it produces software that is distributed to users or other systems — including libraries, binaries, container images, Helm charts, CLI tools, SDKs, or any package published to a registry. Repositories that contain only documentation, governance files, or meeting notes are excluded.
 
-This document does **not** cover:
+---
 
-- OpenSSF Best Practices Badge requirements — see [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
-- Governance, maintainer access, and operational policies — see [Project Guidelines](../project-guidelines/project-guidelines.md).
+## 4. Quick-Start Checklist
 
-Where applicable, individual sections reference the corresponding controls from the [OpenSSF Security Baseline (OSPS)](https://baseline.openssf.org/) to help projects map these guidelines to the broader open source security ecosystem.
+Every project with publishable code or artifacts **MUST** complete these items. Details in linked sections.
+
+1. Designate security contacts and document in SECURITY.md ([Section 5.2](#52-securitymd), [Section 6](#6-vulnerability-response-process))
+2. Enable private vulnerability reporting ([Section 5.1](#51-private-vulnerability-intake-channel))
+3. Publish a SECURITY.md in every repository ([Section 5.2](#52-securitymd))
+4. Respond to vulnerability reports within 14 calendar days ([Section 6.1](#61-initial-response))
+5. Follow coordinated disclosure with 90-day embargo ceiling ([Section 6.5](#65-coordinated-disclosure))
+6. Classify vulnerabilities using CVSS v3.1+ ([Section 7](#7-severity-classification-and-response-targets))
+7. Scan dependencies for known vulnerabilities ([Section 8.4](#84-software-composition-analysis-sca))
+8. Enforce 2FA for all organization members ([Section 9.1](#91-authentication))
+9. Enable branch protection on primary branch ([Section 9.3](#93-branch-protection))
+10. Enable secret scanning and push protection ([Section 9.4](#94-secret-scanning))
+11. Require approval for first-time contributor CI workflows ([Section 9.2](#92-cicd-security))
+12. Set default GITHUB_TOKEN to read-only ([Section 9.2](#92-cicd-security))
 
 ---
 
@@ -88,110 +85,57 @@ Where applicable, individual sections reference the corresponding controls from 
 
 ### 5.1 Private Vulnerability Intake Channel
 
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
+Projects **MUST** provide a private channel through which external reporters can submit vulnerability reports confidentially. The channel **MUST** ensure that:
 
-Projects **MUST** provide a private channel through which external reporters can submit vulnerability reports confidentially. The specific mechanism depends on the hosting platform, but **MUST** ensure that:
-
-1. Reports are visible only to designated security contacts (see [Section 6](#6-vulnerability-response-process)) and **MUST NOT** be publicly accessible.
+1. Reports are visible only to designated security contacts and **MUST NOT** be publicly accessible.
 2. The channel is documented in the project's `SECURITY.md` (see [Section 5.2](#52-securitymd)).
 3. Reporters receive a confirmation that their report has been received.
 
-The following subsections define platform-specific requirements.
-
-#### 5.1.1 GitHub
-
-Projects hosted on **GitHub** **MUST** enable [GitHub Private Vulnerability Reporting](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability) on all repositories that contain publishable code or artifacts. This is the preferred intake channel for GitHub-hosted projects.
-
-Projects **SHOULD** enable Private Vulnerability Reporting at the organization level to ensure newly created repositories inherit this setting.
-
-#### 5.1.2 GitLab
-
-Projects hosted on **GitLab** **MUST** accept vulnerability reports via [confidential issues](https://docs.gitlab.com/ee/user/project/issues/confidential_issues.html). The `SECURITY.md` **MUST** instruct reporters to mark issues as confidential when submitting vulnerability reports.
-
-Projects **SHOULD** configure an [issue template](https://docs.gitlab.com/ee/user/project/description_templates.html) named "Security Vulnerability" that pre-selects the confidentiality checkbox and provides a structured reporting form.
-
-#### 5.1.3 Other Platforms and Self-Hosted Setups
-
-Projects that are **not** hosted on GitHub or GitLab (e.g., self-hosted Gitea, Forgejo, Bitbucket, or other platforms) **MUST** provide at least one of the following private intake channels:
-
-1. **Encrypted email**: A dedicated security contact email address published in `SECURITY.md` and in a [`security.txt`](https://securitytxt.org/) file following [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116). The project **SHOULD** publish a PGP/GPG public key to enable encrypted communication.
-2. **Platform-native private reporting**: If the hosting platform offers a built-in confidential issue or vulnerability reporting mechanism, the project **MUST** enable and use it.
-
-Projects **SHOULD** additionally publish a `/.well-known/security.txt` file on any project website, conforming to [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116), with at minimum the `Contact` and `Expires` fields.
-
-> **Practical note:** Regardless of platform, projects **SHOULD** provide an email address or alternative private channel in `SECURITY.md` as a fallback for reporters who do not have an account on the project's hosting platform.
+Projects **SHOULD** additionally provide an email address or alternative private channel as a fallback for reporters who do not have an account on the project's hosting platform. See the [SECURITY.md template](../templates/SECURITY.md) for platform-specific setup.
 
 ### 5.2 SECURITY.md
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
 
 Projects **MUST** provide a `SECURITY.md` file in every repository that contains publishable code or artifacts. The `SECURITY.md` **MUST** include at minimum:
 
 1. Instructions for reporting a vulnerability via the project's private intake channel (see [Section 5.1](#51-private-vulnerability-intake-channel)), including a direct link where applicable.
-2. A version support policy stating which releases receive security updates (e.g., "the latest two minor releases" or a version table).
+2. A version support policy stating which releases receive security updates.
 3. The expected response timeline (referencing [Section 6](#6-vulnerability-response-process) of this document).
 
-Projects **SHOULD** additionally provide an email address or alternative private channel for reporters who do not have an account on the project's hosting platform.
-
 A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md).
-
-> **Exemplary implementation:** [Gardener's SECURITY.md](https://github.com/gardener/.github/blob/main/SECURITY.md) includes named security contacts, a detailed disclosure process, and severity-based handling.
-
-Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [7 — Severity Classification and Response Targets](#7-severity-classification-and-response-targets).
 
 ---
 
 ## 6. Vulnerability Response Process
 
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-Each project's TSC **MUST** designate at least two maintainers as security contacts responsible for handling vulnerability reports. These contacts **MUST** be documented in the project's `SECURITY.md`.
+Each project's TSC **MUST** designate security contacts responsible for handling vulnerability reports. These contacts **MUST** be documented in the project's `SECURITY.md`.
 
 ### 6.1 Initial Response
 
-Projects **MUST** provide an initial response to a vulnerability report within **14 calendar days** of receiving it, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) passing-level requirement. The response **MUST** be sent via the same channel the report was received on (e.g., GitHub Security Advisory, GitLab confidential issue, or encrypted email).
-
-Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits, in line with the [OpenSSF Vulnerability Disclosure Guide](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md).
+Projects **MUST** provide an initial response to a vulnerability report within **14 calendar days** of receiving it. Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits.
 
 ### 6.2 Triage and Severity Assessment
 
 The initial response **SHOULD** include — or be followed promptly by — a triage that covers:
 
 1. Validation: confirming whether the report describes a genuine vulnerability.
-2. Severity assessment using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later, where practical.
+2. Severity assessment using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later.
 3. Assignment of a severity level per [Section 7](#7-severity-classification-and-response-targets).
 
 The reporter **SHOULD** be informed of the triage outcome and the planned remediation timeline.
 
 ### 6.3 Fix Coordination
 
-Fix development **SHOULD** happen in a private fork, draft advisory, or other non-public workspace to prevent premature disclosure (the **MUST** requirement in the Section 6 conformance table applies to designating security contacts and following the response process; the choice of private workspace is **RECOMMENDED**). The fix **MUST** be reviewed by at least one additional maintainer before merging.
-
-> **Platform-specific guidance:** On GitHub, use a [temporary private fork within a Security Advisory](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/collaborating-in-a-temporary-private-fork-to-resolve-a-repository-security-vulnerability). On GitLab, use a [confidential merge request](https://docs.gitlab.com/ee/user/project/merge_requests/confidential.html). On other platforms, use a private branch or out-of-band patch review.
+Fix development **SHOULD** happen in a non-public workspace. The fix **MUST** be reviewed by at least one additional maintainer before merging.
 
 If the vulnerability affects multiple NeoNephos projects, the reporting project's TSC **SHOULD** coordinate with the affected projects' TSCs before disclosure. The TAC **MAY** facilitate cross-project coordination.
 
 ### 6.4 CVE Assignment
 
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤30 days) | TSC   |
+Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with a CVSS score ≥ 4.0 (Medium or higher).
 
-Projects **SHOULD** request a CVE identifier for confirmed vulnerabilities with a CVSS score ≥ 4.0 (Medium or higher). Projects hosted on GitHub **SHOULD** obtain CVE identifiers via [GitHub's CNA program](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory#requesting-a-cve-identification-number). Projects on other platforms **MAY** request CVEs through [MITRE's CVE Request form](https://cveform.mitre.org/) or another authorized CNA.
-
-> **Practical note:** CVE assignment adds credibility and traceability but involves administrative overhead. Early-stage projects or projects with a small user base **MAY** defer CVE assignment until a stable release has been published and external adoption is established. A platform security advisory alone already provides adequate transparency for most cases.
+Vulnerabilities scoring below 4.0 (Low) **MAY** be tracked informally and do not require a CVE or public advisory.
 
 ### 6.5 Coordinated Disclosure
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
 
 Projects **MUST** follow a coordinated disclosure process:
 
@@ -202,29 +146,21 @@ Projects **MUST** follow a coordinated disclosure process:
    - The CVSS score and vector.
    - The CVE identifier (if assigned).
    - Remediation steps or patched versions.
-
-   On GitHub, use [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/publishing-a-repository-security-advisory). On GitLab, use a [project-level vulnerability record](https://docs.gitlab.com/ee/user/application_security/vulnerabilities/). On other platforms, publish the advisory on the project website or mailing list and link to it from `SECURITY.md`.
-3. **Early disclosure**: If active exploitation is detected in the wild, the TSC **MAY** shorten the embargo period and disclose early with whatever fix or mitigation is available.
+3. **Advisory publication**: Projects **MUST** publish advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via the platform's advisory mechanism.
+4. **Release notes**: Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions.
+5. **Changelogs**: Release changelogs **SHOULD** explicitly flag security-relevant modifications (fixes, dependency updates addressing CVEs, configuration changes with security impact).
+6. **Advisory history**: Projects **SHOULD** maintain a public record of past security advisories accessible from the project's `SECURITY.md`.
+7. **Early disclosure**: If active exploitation is detected in the wild, the TSC **MAY** shorten the embargo period and disclose early with whatever fix or mitigation is available.
 
 ### 6.6 Post-Disclosure
 
-After public disclosure:
-
-- The fix **MUST** be released in a patch version for all supported release branches.
-- The CVE and advisory **SHOULD** be referenced in the release notes of the patched version.
-- Projects **SHOULD** conduct a retrospective for Critical and High severity vulnerabilities to identify process improvements.
-
-Related sections: [5 — Security Contact per Project](#5-security-contact-per-project); [7 — Severity Classification and Response Targets](#7-severity-classification-and-response-targets); [9 — Security Transparency](#9-security-transparency).
+The fix **MUST** be released in a patch version for all supported release branches. The CVE and advisory **SHOULD** be referenced in the release notes of the patched version.
 
 ---
 
 ## 7. Severity Classification and Response Targets
 
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** exercise judgment when the CVSS score does not fully reflect the practical impact of a vulnerability.
+Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** exercise judgment when the CVSS score does not fully reflect practical impact.
 
 Projects **MUST** publish a security advisory within the 90-day disclosure ceiling defined in [Section 6.5](#65-coordinated-disclosure). Within that ceiling, projects **SHOULD** aim for the following response targets:
 
@@ -236,14 +172,11 @@ Projects **MUST** publish a security advisory within the 90-day disclosure ceili
 | **Low**      | 0.1 – 3.9  | Best effort            | Best effort            |
 
 - **Fix Target**: Time from triage completion to a fix being merged.
-- **Disclosure Target**: Time from triage completion to publishing a security advisory (see [Section 6.5](#65-coordinated-disclosure)). The disclosure **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
-- When the fix and disclosure targets coincide (as with Medium severity), the fix and disclosure **MAY** happen simultaneously. If the fix is not ready when the disclosure target expires, the TSC **SHOULD** publish a mitigation advisory and disclose per [Section 6.5](#65-coordinated-disclosure).
+- **Disclosure Target**: Time from triage completion to publishing a security advisory. The disclosure **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
 
-If a project cannot meet a fix target, the TSC **SHOULD** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory. Transparent communication about delays is always preferable to silently missing a deadline.
+If a project cannot meet a fix target, the TSC **SHOULD** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory.
 
-> **Rationale:** The 90-day disclosure ceiling is a **MUST** aligned with the [OpenSSF Model Outbound Vulnerability Disclosure Policy](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md), Google Project Zero, and CNCF projects such as Envoy. The severity-based fix targets are **SHOULD**-level goals — no major open source foundation (including CNCF) mandates hard, severity-tiered fix SLAs, and volunteer-maintained projects cannot guarantee timelines the way commercial vendors can. The targets are comparable to those used by GitLab and Chainguard and provide a reasonable benchmark for projects to measure against.
-
-Related sections: [6 — Vulnerability Response Process](#6-vulnerability-response-process); [6.5 — Coordinated Disclosure](#65-coordinated-disclosure).
+The 90-day ceiling aligns with the [OpenSSF Vulnerability Disclosure Guide](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md) and Google Project Zero. Severity-based fix targets are **SHOULD**-level goals — volunteer-maintained projects cannot guarantee timelines the way commercial vendors can.
 
 ---
 
@@ -251,263 +184,117 @@ Related sections: [6 — Vulnerability Response Process](#6-vulnerability-respon
 
 ### 8.1 Artifact Signing
 
-| Priority   | Resolution                                   | Owner |
-|------------|----------------------------------------------|-------|
-| **SHOULD** | When publishing artifacts to external consumers | TSC   |
-
-Projects **SHOULD** sign all published release artifacts (container images, binaries, packages) using [Sigstore cosign](https://docs.sigstore.dev/cosign/signing/overview/) or an equivalent signing mechanism. Signing **SHOULD** be integrated into the CI/CD pipeline.
-
-> **Practical note:** Artifact signing, build provenance, and SBOM generation (Sections 8.1–8.3) are intended to be adopted incrementally. Projects **SHOULD** prioritize software composition analysis ([Section 8.4](#84-software-composition-analysis-sca)) first, as it provides the highest security value with the least effort. The remaining supply chain practices can be introduced as the project matures and publishes artifacts to external consumers.
+Projects **SHOULD** sign all published release artifacts (container images, binaries, packages) using [Sigstore](https://docs.sigstore.dev/) or an equivalent signing mechanism. Signing **SHOULD** be integrated into the CI/CD pipeline.
 
 ### 8.2 Build Provenance (SLSA)
 
-| Priority   | Resolution                                   | Owner |
-|------------|----------------------------------------------|-------|
-| **SHOULD** | When publishing artifacts to external consumers | TSC   |
-
-Projects **SHOULD** generate [SLSA](https://slsa.dev/) provenance attestations for published artifacts. The target level is at minimum [SLSA Build Level 2](https://slsa.dev/spec/v1.0/levels) (scripted build, hosted build platform).
-
-For implementation guidance and tooling options, see the [SLSA specification](https://slsa.dev/spec/v1.0/) and [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-DO-03.01` and `OSPS-DO-03.02` (Level 3).
+Projects **SHOULD** generate [SLSA](https://slsa.dev/) provenance attestations for published artifacts, targeting at minimum [SLSA Build Level 2](https://slsa.dev/spec/v1.0/levels).
 
 ### 8.3 Software Bill of Materials (SBOM)
 
-| Priority   | Resolution                                   | Owner |
-|------------|----------------------------------------------|-------|
-| **SHOULD** | When publishing artifacts to external consumers | TSC   |
-
 Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each published release artifact. When an SBOM is published, it **MUST** use either [SPDX](https://spdx.dev/) or [CycloneDX](https://cyclonedx.org/) format.
-
-SBOMs **SHOULD** be published alongside release artifacts (e.g., attached to GitHub releases or pushed to the OCI registry as a referrer).
 
 ### 8.4 Software Composition Analysis (SCA)
 
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-*The priority above applies to dependency vulnerability scanning. Container image scanning and license compliance scanning carry their own conformance levels below.*
-
-Projects **SHOULD** enable automated software composition analysis (SCA) covering vulnerability detection, container image scanning, and license compliance for all repositories containing publishable code. Modern SCA tools — such as [Trivy](https://github.com/aquasecurity/trivy), [Grype](https://github.com/anchore/grype), [OSV-Scanner](https://google.github.io/osv-scanner/), [Dependabot](https://docs.github.com/en/code-security/dependabot), or [Renovate](https://docs.renovatebot.com/) — typically cover multiple of these concerns in a single scan. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` (Level 3) and `OSPS-LE-02.01`, `OSPS-LE-02.02` (Level 1).
-
-**Dependency vulnerability scanning** (**MUST**)
-
 - Projects **MUST** scan direct and transitive dependencies for known vulnerabilities.
 - Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
+- Projects **SHOULD** remediate known vulnerabilities of medium or higher severity within 60 calendar days of public disclosure, per [OpenSSF Best Practices](https://www.bestpractices.dev/).
+- Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry.
+- Projects **SHOULD** automate license scanning of all dependencies and define an allowlist of acceptable licenses.
 
-**Container image scanning** (**SHOULD** — when publishing container images)
-
-- Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry, integrated into the CI/CD pipeline.
-- Projects **SHOULD** fail the pipeline (or at minimum generate a warning) when vulnerabilities at or above a project-defined severity threshold are detected (e.g., "Critical and High").
-
-**License compliance scanning** (**SHOULD**)
-
-- Projects **SHOULD** automate license scanning of all direct and transitive dependencies to detect incompatible, unknown, or unlicensed components.
-- Projects **SHOULD** define an allowlist of acceptable licenses (e.g., MIT, Apache-2.0, BSD-2-Clause, BSD-3-Clause) and flag any dependency whose license is not on the allowlist. Dependencies with incompatible or unknown licenses **SHOULD** be resolved before release.
-
-Related sections: [8.3 — Software Bill of Materials (SBOM)](#83-software-bill-of-materials-sbom); [Project Guidelines §15.3.2 — Supplemental Compliance](../project-guidelines/project-guidelines.md#1532-supplemental-compliance).
+See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` and `OSPS-LE-02.01`, `OSPS-LE-02.02`.
 
 ---
 
-## 9. Security Transparency
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-Projects **MUST** publish security advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via the platform's advisory mechanism. On GitHub, use [GitHub Security Advisories](https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories). On GitLab, use [project-level vulnerability records](https://docs.gitlab.com/ee/user/application_security/vulnerabilities/). On other platforms, publish advisories on the project website or mailing list and link to them from `SECURITY.md`.
-
-Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions. If a CVE has not yet been assigned at the time of publication, the advisory **SHOULD** note that CVE assignment is pending and be updated once the identifier is issued.
-
-Release changelogs **SHOULD** explicitly flag security-relevant modifications (fixes, dependency updates addressing CVEs, configuration changes with security impact). See [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-BR-04.01` (Level 2).
-
-Projects **SHOULD** maintain a public record of past security advisories accessible from the project's `SECURITY.md`.
-
-Related sections: [6.6 — Post-Disclosure](#66-post-disclosure); [5.2 — SECURITY.md](#52-securitymd).
-
----
-
-## 10. Operational Security Controls
+## 9. Operational Security Controls
 
 This section defines security-relevant operational controls for NeoNephos projects. These requirements complement the supply chain security practices in [Section 8](#8-supply-chain-security) and the infrastructure guarantees in the [Project Guidelines §15](../project-guidelines/project-guidelines.md#15-operational-guarantees).
 
-### 10.1 Authentication
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
+### 9.1 Authentication
 
 Projects **MUST** enforce Two-Factor Authentication (2FA) for all organization members.
 
-Projects **SHOULD** disable SSH deploy keys at the organization level (strengthening the Project Guidelines' position, which does not enforce a global policy). Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
+Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
 
-Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance).
-
-### 10.2 CI/CD Security
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-*The priority above applies to the core CI/CD controls (fork workflows, workflow permissions). Sub-controls below carry their own conformance levels.*
-
-**Self-hosted runners**
-
-- Repository-level self-hosted runners **SHOULD NOT** be enabled. Organization-level policies **SHOULD** be used to prevent repositories from registering their own runners.
-- Organization-level self-hosted runners **SHOULD NOT** be enabled unless necessary, and **SHOULD** be approved by GitHub Enterprise Cloud account administrators who record the decision via a TAC vote.
-- *Rationale*: GitHub-hosted runners are preferred; self-hosted runners require careful hardening to prevent exploitation. Centralizing runner management at the organization level improves governance and auditability.
-
-**Fork pull-request workflows**
+### 9.2 CI/CD Security
 
 - Projects **MUST** require approval for first-time contributors before workflows execute on fork pull requests.
-- *Rationale*: Prevents unauthorized code execution from external contributors.
-
-**Workflow permissions**
-
-- The default `GITHUB_TOKEN` permission **MUST** be set to "Read repository contents and packages."
+- The default `GITHUB_TOKEN` permission **MUST** be set to read-only.
 - Write access **SHOULD** be explicitly requested via the `permissions` key in workflow files.
-- *Rationale*: Limits blast radius by preventing workflows from gaining unnecessary write access. See [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-AC-04.01` (Level 2) for default permissions and `OSPS-AC-04.02` (Level 3) for per-job scoping.
+- Projects **SHOULD** use workload identities (OIDC) or short-lived tokens for interactions with external services.
+- Third-party actions **SHOULD** be pinned to a specific commit SHA rather than a mutable tag.
+- Workflows **SHOULD** treat all externally supplied metadata as untrusted input and sanitize it before use in shell commands.
+- Projects **SHOULD** conduct package releases via CI/CD pipelines rather than from local machines.
+- Repository-level self-hosted runners **SHOULD NOT** be enabled unless approved by organization administrators.
 
-**Credential handling**
+See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-AC-04.01`, `OSPS-AC-04.02`, `OSPS-BR-01.01`.
 
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-- Projects **SHOULD** use workload identities (OIDC) or short-lived GitHub access tokens for interactions with external services.
-- Where workload identity is not supported, projects **SHOULD** use fine-grained personal access tokens with the minimum required scopes.
-- Temporary access tokens created for exceptional local batch jobs **MUST** be deleted immediately after use and **SHOULD NOT** exceed a short lifetime (e.g., 6 hours).
-- Projects **SHOULD** conduct package releases via CI/CD pipelines (GitHub Actions recommended) rather than from local machines. See also [Section 8.1 — Artifact Signing](#81-artifact-signing) and [Section 8.2 — Build Provenance](#82-build-provenance-slsa).
-
-**Pipeline input sanitization**
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-- Workflows **SHOULD** treat all externally supplied metadata (issue titles, PR bodies, branch names, commit messages) as untrusted input and sanitize it before use in shell commands, environment variables, or script interpolation.
-- Workflows triggered by events from untrusted sources (e.g., `pull_request_target`, `issue_comment`) **SHOULD NOT** check out or execute code from the untrusted source in a context that has access to repository secrets.
-- *Rationale*: Prevents script injection and privilege escalation via CI/CD pipelines. See [OpenSSF Security Baseline](https://baseline.openssf.org/) `OSPS-BR-01.01` (Level 1) and the [OpenSSF SCM Best Practices](https://best.openssf.org/SCM-BestPractices/).
-
-**Workflow dependency pinning and action provenance**
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-- Third-party GitHub Actions **SHOULD** be pinned to a specific commit SHA rather than a mutable tag (e.g., `actions/checkout@<sha>` instead of `actions/checkout@v4`).
-- Projects **SHOULD** restrict allowed GitHub Actions to actions created by GitHub and verified creators, or to an explicit allowlist maintained by the project. See the [OpenSSF Scorecard `Pinned-Dependencies` check](https://github.com/ossf/scorecard/blob/main/docs/checks.md#pinned-dependencies).
-
-> **Exemplary implementation:** The [Open Component Model CI workflows](https://github.com/open-component-model/open-component-model/tree/main/.github/workflows) demonstrate SHA-pinned actions, minimal `GITHUB_TOKEN` permissions with per-job escalation, and safe `pull_request_target` handling.
-
-Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance); [8 — Supply Chain Security](#8-supply-chain-security).
-
-### 10.3 Branch Protection
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
+### 9.3 Branch Protection
 
 Projects **MUST** enable branch protection rules on the primary branch (e.g., `main`) of every repository containing publishable code. At minimum:
 
-1. Direct commits to the primary branch **MUST** be prevented; all changes **MUST** go through a pull request or merge request.
+1. Direct commits to the primary branch **MUST** be prevented; all changes **MUST** go through a pull request.
 2. Force-pushes to the primary branch **MUST** be disabled.
 3. Deletion of the primary branch **MUST** be prevented.
 4. At least one approving review from a non-author maintainer **MUST** be required before merge.
 5. Required status checks (CI build, tests, security scans) **SHOULD** pass before merge.
 
-> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-AC-03.01` and `OSPS-AC-03.02` (Level 1) require preventing unauthorized commits and deletion of the primary branch. Control `OSPS-QA-07.01` (Level 3) requires non-author approval before merge. See also the [OpenSSF SCM Best Practices](https://best.openssf.org/SCM-BestPractices/) for platform-specific configuration guidance.
+### 9.4 Secret Scanning
 
-### 10.4 Secret Scanning and Prevention
-
-| Priority | Resolution      | Owner |
-|----------|-----------------|-------|
-| **MUST** | ASAP (≤30 days) | TSC   |
-
-Projects **MUST** enable automated secret scanning on all repositories to detect accidentally committed credentials, API keys, and tokens. On GitHub, enable [Secret Scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning) and [Push Protection](https://docs.github.com/en/code-security/secret-scanning/introduction/about-push-protection). On GitLab, enable [Secret Detection](https://docs.gitlab.com/ee/user/application_security/secret_detection/). On other platforms, integrate a tool such as [Gitleaks](https://github.com/gitleaks/gitleaks) or [TruffleHog](https://github.com/trufflesecurity/trufflehog) into the CI pipeline.
+Projects **MUST** enable automated secret scanning on all repositories to detect accidentally committed credentials, API keys, and tokens.
 
 Projects **SHOULD** enable push protection to block commits containing detected secrets before they enter the repository history.
 
-> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) control `OSPS-BR-07.01` (Level 1) requires that the project's version control system **MUST** prevent secrets from being included in a commit. The [OpenSSF Concise Guide for Developing More Secure Software](https://best.openssf.org/Concise-Guide-for-Developing-More-Secure-Software) (Recommendation #9) reinforces this requirement.
-
-### 10.5 Access Governance
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
+### 9.5 Access Governance
 
 Projects **SHOULD** follow the principle of least privilege for all access grants:
 
-- Limit GitHub Organization Owner access to a small number of administrative accounts.
+- Limit organization owner access to a small number of administrative accounts.
 - Limit the number of maintainers with repository admin permissions.
-- Ensure settings and permissions changes are made only by trusted administrators.
-- Use pull requests for all repository changes; consider preventing direct push access by requiring pull-request merges from forks.
+- Use pull requests for all repository changes.
 - Maintain an up-to-date inventory of maintainer permissions across all platforms used by the project.
 
-**Maintainer vetting**
+Projects **SHOULD** require that maintainer candidates have a sustained history of contributions, are vouched for by an existing maintainer, and have verified their real identity with an existing maintainer, preferably in person. Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)).
 
-Projects **SHOULD** require that maintainer candidates:
+### 9.6 Code Quality and Scanning
 
-1. Have a demonstrated history of contributions for at least 6 months.
-2. Are vouched for by an existing maintainer.
-3. Have verified their real identity with an existing maintainer, preferably in person.
+Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities. Projects **SHOULD** define a severity threshold and gate the CI pipeline on it.
 
-*Rationale*: Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)). For the broader contributor promotion process, see the [Project Lifecycle Policy](../lifecycle-policy/project-lifecycle-policy.md).
+### 9.7 Security Assessment and Posture Verification
 
-### 10.6 Code Quality and Scanning
+Projects **SHOULD** perform an initial security assessment when entering the Growth or Graduated lifecycle stage, covering trust boundaries, a lightweight threat model, and documentation of known security assumptions and residual risks.
 
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
+Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/scorecard) on all repositories containing publishable code. Scorecard provides automated checks for many of the requirements in this document, including branch protection, dependency scanning, CI permissions, and vulnerability disclosure.
 
-Projects **SHOULD** enable static application security testing (SAST) — such as [CodeQL](https://codeql.github.com/) or [SonarQube](https://www.sonarsource.com/products/sonarqube/) — to detect code-level vulnerabilities. Projects **SHOULD** define a severity threshold (e.g., "Critical and High") and gate the CI pipeline on it. See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-06.01` and `OSPS-VM-06.02` (Level 3).
+---
 
-For dependency-level vulnerability scanning, see [Section 8.4 — Software Composition Analysis](#84-software-composition-analysis-sca).
+## 10. Conformance Matrix
 
-### 10.7 Data Retention
+Each requirement carries a conformance priority and a resolution timeframe. The TSC of each project is the responsible owner for all requirements.
 
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-- **Private repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days.
-- **Public repositories**: Artifact and log retention **SHOULD** be configured to at least 180 days. On platforms where the maximum is lower (e.g., GitHub limits public repositories to 90 days), projects **SHOULD** configure the platform maximum.
-
-Related sections: [Project Guidelines §15.3 — Security and Compliance](../project-guidelines/project-guidelines.md#153-security-and-compliance).
-
-### 10.8 Security Assessment
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-Projects **SHOULD** perform an initial security assessment when entering the Growth or Graduated lifecycle stage. The assessment **SHOULD** include:
-
-1. Identification of the project's trust boundaries and external interfaces.
-2. A lightweight threat model covering the project's primary attack surfaces (e.g., using [STRIDE](https://en.wikipedia.org/wiki/STRIDE_%28security%29) or equivalent).
-3. Documentation of known security assumptions and residual risks.
-
-The assessment does not need to be formal; a section in the project's documentation or a dedicated `SECURITY_ASSESSMENT.md` is sufficient. Projects **SHOULD** review and update the assessment when significant architectural changes occur.
-
-> **OpenSSF alignment:** [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-SA-03.01` (Level 2) and `OSPS-SA-03.02` (Level 3) require security assessment, threat modeling, and attack surface analysis for mature projects.
-
-### 10.9 Automated Security Posture Verification
-
-| Priority   | Resolution      | Owner |
-|------------|-----------------|-------|
-| **SHOULD** | ASAP (≤90 days) | TSC   |
-
-Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/scorecard) on all repositories containing publishable code. Scorecard provides automated checks for many of the requirements in this document and the [Project Guidelines](../project-guidelines/project-guidelines.md), including branch protection, dependency scanning, CI permissions, and vulnerability disclosure.
-
-Projects **MAY** integrate Scorecard into their CI pipeline via the [Scorecard GitHub Action](https://github.com/ossf/scorecard-action) to receive continuous feedback on security posture.
-
-> **Exemplary implementation:** The [Open Component Model Scorecard workflow](https://github.com/open-component-model/open-component-model/blob/main/.github/workflows/openssf-scorecard.yml) runs Scorecard with SARIF upload to the code-scanning dashboard.
-
-Related sections: [8 — Supply Chain Security](#8-supply-chain-security); [8.4 — Software Composition Analysis](#84-software-composition-analysis-sca); [10.2 — CI/CD Security](#102-cicd-security).
+| Section | Requirement | Priority | Resolution | Owner |
+|---------|-------------|----------|------------|-------|
+| Section 5 | Private vulnerability intake channel | **MUST** | ≤30 days | TSC |
+| Section 5 | SECURITY.md in every publishable repository | **MUST** | ≤30 days | TSC |
+| Section 6 | Designated security contacts | **MUST** | ≤30 days | TSC |
+| Section 6 | Initial response within 14 days | **MUST** | ≤30 days | TSC |
+| Section 6 | Coordinated disclosure, 90-day embargo ceiling | **MUST** | ≤30 days | TSC |
+| Section 6 | CVE assignment for CVSS ≥ 4.0 | **SHOULD** | ≤30 days | TSC |
+| Section 7 | Severity classification using CVSS v3.1+ | **MUST** | ≤30 days | TSC |
+| Section 8 | Dependency vulnerability scanning | **MUST** | ≤30 days | TSC |
+| Section 8 | Artifact signing, SLSA provenance, SBOM | **SHOULD** | When publishing | TSC |
+| Section 9 | 2FA for all organization members | **MUST** | ≤30 days | TSC |
+| Section 9 | Branch protection on primary branch | **MUST** | ≤30 days | TSC |
+| Section 9 | Secret scanning and push protection | **MUST** | ≤30 days | TSC |
+| Section 9 | First-time contributor CI approval | **MUST** | ≤30 days | TSC |
+| Section 9 | Default GITHUB_TOKEN read-only | **MUST** | ≤30 days | TSC |
+| Section 9 | OIDC/short-lived tokens, action pinning, input sanitization | **SHOULD** | ≤90 days | TSC |
+| Section 9 | Access governance and maintainer vetting | **SHOULD** | ≤90 days | TSC |
+| Section 9 | SAST scanning | **SHOULD** | ≤90 days | TSC |
+| Section 9 | Security assessment and Scorecard | **SHOULD** | ≤90 days | TSC |
 
 ---
 
 ## 11. Acknowledgements
 
-Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity. Acknowledgement **SHOULD** be included in the published security advisory and **MAY** also be included in release notes.
-
-Related sections: [6.5 — Coordinated Disclosure](#65-coordinated-disclosure); [9 — Security Transparency](#9-security-transparency).
+Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity.
