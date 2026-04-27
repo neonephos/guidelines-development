@@ -11,3 +11,12 @@ The repository is organized into the following sections:
 - **[Security Guidelines](security-guidelines)** — Guidelines for how projects should handle security reports and address security issues.
 - **[Tools and Services](services)** — Guidelines and documentation for foundation-provided tools and services.
 - **[Onboarding](onboarding)** - Guidelines for onboarding new projects to NeoNephos.
+
+
+## General guidelines for this repository
+
+-	If you’d like to contribute, please submit your PR or PRs as early as possible so everyone has time to review and comment.
+-	If you agree with a PR, approve it or leave a comment indicating your approval. If you don’t agree, leave a comment as soon as possible explaining your concern.
+-	Comments, updates, and approvals are **due by 21 May**. New PRs should be submitted at least one week earlier.
+-	On 22 May, the TAC will review the status of all PRs and merge those with sufficient approvals.
+-	If you haven’t commented by the deadline, we will assume your approval.
