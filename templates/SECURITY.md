@@ -1,27 +1,40 @@
-# Security Policy (Template)
+# Security Policy
 
-*This is a template for a SECURITY.md file. Adjust the placeholders (marked with `<...>`) to match
-your project. Remove this italic guidance text before publishing. For projects with multiple
-repositories, each repository containing publishable code or artifacts MUST have its own SECURITY.md.
-On GitHub, a SECURITY.md placed in the organization's `.github` repository serves as the default for
-all repositories that do not have their own — this satisfies the per-repository requirement, but
-cannot include repository-specific direct links (see Option A below).
-See the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for the full
-set of requirements.*
-
-*Note: The relative links below (e.g., `../security-guidelines/...`) assume this file lives in a
-repository alongside the guidelines. If placed in an organization-level `.github` repository, adjust
-links to point to the guidelines repository.*
+<!-- Template instructions:
+     - Replace all placeholders marked with <...> to match your project.
+     - Remove sections that don't apply to your hosting platform (keep only the
+       relevant "Option" under "Reporting a Vulnerability").
+     - Remove all HTML comments (like this one) before publishing.
+     - For projects with multiple repositories, each repository containing
+       publishable code or artifacts MUST have its own SECURITY.md. On GitHub,
+       a SECURITY.md placed in the organization's `.github` repository serves
+       as the default for all repositories that do not have their own — this
+       satisfies the per-repository requirement, but cannot include
+       repository-specific direct links (see Option A below).
+     - See the NeoNephos Security Guidelines for the full set of requirements:
+       https://github.com/neonephos/guidelines-development/blob/main/security-guidelines/security-guidelines.md
+-->
 
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability in **\<Project Name\>**, please report it responsibly
 through one of the channels below. **Do not open a public issue for security vulnerabilities.**
 
-*Choose the section that matches your hosting platform. Remove the other sections and this guidance
-text before publishing.*
+### What to Include in Your Report
+
+To help us assess and address the vulnerability efficiently, please include:
+
+- **Affected component(s)** and version(s)
+- **Steps to reproduce** the vulnerability
+- **Impact assessment** — what an attacker could achieve
+- Whether the vulnerability is **already publicly known**
+- Any suggested fix or mitigation (optional)
 
 ### Option A: GitHub Private Vulnerability Reporting (Preferred for GitHub-hosted projects)
+
+<!-- Before publishing: Ensure that Private Vulnerability Reporting is enabled
+     on this repository (or at the organization level). See:
+     https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/configuring-private-vulnerability-reporting-for-a-repository -->
 
 Please use GitHub's built-in private vulnerability reporting:
 
@@ -31,11 +44,11 @@ Please use GitHub's built-in private vulnerability reporting:
 
 Direct link: [Report a vulnerability](https://github.com/<org>/<repo>/security/advisories/new)
 
-*For more information, see [Privately reporting a security vulnerability](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).*
+<!-- If this SECURITY.md is used as an organization-level file in a `.github`
+     repository, remove the direct link above and keep only the step-by-step
+     instructions, since the link cannot point to a specific repository. -->
 
-*If this SECURITY.md is used as an organization-level file in a `.github` repository, remove the
-direct link above and keep only the step-by-step instructions, since the link cannot point to a
-specific repository.*
+*For more information, see [Privately reporting a security vulnerability](https://docs.github.com/en/code-security/security-advisories/guidance-on-reporting-and-writing-information-about-vulnerabilities/privately-reporting-a-security-vulnerability).*
 
 ### Option B: GitLab Confidential Issues (Preferred for GitLab-hosted projects)
 
@@ -53,34 +66,39 @@ Please report vulnerabilities as a **confidential issue**:
 
 You may report vulnerabilities via email to **\<security contact email\>**.
 
-*If your project publishes a PGP/GPG key for encrypted communication, mention it here. Projects
-SHOULD also publish a [`security.txt`](https://securitytxt.org/) file per [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116).*
+<!-- If your project publishes a PGP/GPG key for encrypted communication,
+     mention it here and provide a link to the public key or a fingerprint.
+     Projects SHOULD also publish a security.txt file following RFC 9116:
+     https://securitytxt.org/ -->
 
 ### Fallback Contact
 
-*If your project uses Option A or Option B as the primary channel, add an email fallback here for
-reporters without an account on that platform. Remove this section if you chose Option C as primary.*
+<!-- If your project uses Option A or Option B above as the primary channel,
+     add an email fallback here for reporters who do not have an account on
+     the hosting platform. If you chose Option C as your primary channel,
+     remove this section to avoid duplication. -->
 
 You may also report vulnerabilities via email to **\<security contact email\>**.
 
 ## Security Contacts
 
+<!-- The NeoNephos Security Guidelines (Section 6) require designated security
+     contacts. Add more rows as needed. Adjust the profile links to match your
+     hosting platform. -->
+
 The following maintainers are responsible for handling vulnerability reports:
 
 | Name | Handle | Role |
 |------|--------|------|
-| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Lead Security Contact |
-| *\<Name\>* | [@\<handle\>](https://github.com/<handle>) | Security Contact |
-
-*The [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md#6-vulnerability-response-process)
-require designated security contacts. Add rows as needed.
-Adjust the profile links to match your hosting platform.*
+| \<Name\> | [\<handle\>](<profile-url>) | Lead Security Contact |
+| \<Name\> | [\<handle\>](<profile-url>) | Security Contact |
 
 ## Supported Versions
 
-*State which versions receive security updates — prefer a version support policy (e.g., "the latest
-two minor releases") over naming specific branches. Choose any format that fits your project. Remove
-this guidance text before publishing. Examples:*
+<!-- State which versions receive security updates — prefer a version support
+     policy (e.g., "the latest two minor releases") over naming specific branches.
+     Choose any format that fits your project.
+     Remove this comment and pick one of the options below (or write your own). -->
 
 **Option A — Single active branch (common for early-stage projects):**
 
@@ -96,11 +114,11 @@ this guidance text before publishing. Examples:*
 
 ## Response Process
 
-This project follows the [NeoNephos Security Guidelines](../security-guidelines/security-guidelines.md) for vulnerability handling. In summary:
+This project follows the [NeoNephos Security Guidelines](https://github.com/neonephos/guidelines-development/blob/main/security-guidelines/security-guidelines.md) for vulnerability handling. In summary:
 
-- **Initial response**: We will respond to your report within **14 calendar days**, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) requirement.
-- **Embargo**: Vulnerability details will remain confidential for up to **90 days** while a fix is developed. Fix timelines (see table below) are measured from triage completion.
-- **Disclosure**: Once a fix is available, we will publish a security advisory with full details.
+- **Initial response**: We will respond to your report within **14 calendar days** of receipt, in line with the [OpenSSF Best Practices](https://www.bestpractices.dev/) requirement.
+- **Embargo**: Vulnerability details will remain confidential for up to **90 days** from report receipt while a fix is developed, consistent with the [Google Project Zero disclosure policy](https://googleprojectzero.blogspot.com/2021/04/policy-and-disclosure-2021-edition.html).
+- **Disclosure**: Once a fix is available (or the embargo expires), we will publish a security advisory with full details.
 
 ### Severity Response Targets
 
@@ -111,7 +129,7 @@ This project follows the [NeoNephos Security Guidelines](../security-guidelines/
 | Medium | 4.0 – 6.9 | ≤ 90 days   | ≤ 90 days         |
 | Low | 0.1 – 3.9 | Best effort    | Best effort       |
 
-*Timelines are in calendar days, measured from triage completion. For the full definitions, see the [NeoNephos Security Guidelines, Section 7](../security-guidelines/security-guidelines.md#7-severity-classification-and-response-targets).*
+*These are **SHOULD**-level targets as defined by the [NeoNephos Security Guidelines](https://github.com/neonephos/guidelines-development/blob/main/security-guidelines/security-guidelines.md#7-severity-classification-and-response-targets). The 90-day embargo ceiling is a **MUST** aligned with Google Project Zero. All timelines are measured from report receipt (Day 0); fix and disclosure may occur simultaneously.*
 
 ## Disclosure Policy
 
@@ -125,6 +143,8 @@ We are committed to crediting reporters in our security advisories unless you pr
 
 ## Past Security Advisories
 
-*Replace with a link to your platform's published advisories page, or list "None yet" for new projects.*
+<!-- Optional — include this section only if your project has published
+     advisories. Remove it entirely for new projects. Adjust the link to
+     match your hosting platform. -->
 
 None yet. See [Published Security Advisories](https://github.com/<org>/<repo>/security/advisories?state=published) once advisories are available.

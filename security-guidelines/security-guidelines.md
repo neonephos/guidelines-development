@@ -75,9 +75,9 @@ Every project with publishable code or artifacts **MUST** complete these items. 
 7. Scan dependencies for known vulnerabilities ([Section 8.4](#84-software-composition-analysis-sca))
 8. Enforce 2FA for all organization members ([Section 9.1](#91-authentication))
 9. Enable branch protection on primary branch ([Section 9.3](#93-branch-protection))
-10. Enable secret scanning and push protection ([Section 9.4](#94-secret-scanning))
+10. Enable secret scanning ([Section 9.4](#94-secret-scanning))
 11. Require approval for first-time contributor CI workflows ([Section 9.2](#92-cicd-security))
-12. Set default GITHUB_TOKEN to read-only ([Section 9.2](#92-cicd-security))
+12. Set default CI/CD token to read-only ([Section 9.2](#92-cicd-security))
 
 ---
 
@@ -113,6 +113,8 @@ Each project's TSC **MUST** designate security contacts responsible for handling
 
 Projects **MUST** provide an initial response to a vulnerability report within **14 calendar days** of receiving it. Projects **SHOULD** acknowledge receipt within **2 business days** where maintainer availability permits.
 
+> **Timeline anchor:** All timelines in this document are measured from **report receipt** (Day 0) — the date the project receives the vulnerability report. This follows [Google Project Zero's practice](https://googleprojectzero.blogspot.com/2021/04/policy-and-disclosure-2021-edition.html) of starting the clock at vendor notification.
+
 ### 6.2 Triage and Severity Assessment
 
 The initial response **SHOULD** include — or be followed promptly by — a triage that covers:
@@ -139,7 +141,7 @@ Vulnerabilities scoring below 4.0 (Low) **MAY** be tracked informally and do not
 
 Projects **MUST** follow a coordinated disclosure process:
 
-1. **Embargo period**: The maximum embargo duration is **90 calendar days** from the date the report is acknowledged. During this period, details of the vulnerability **MUST NOT** be disclosed publicly.
+1. **Embargo period**: The maximum embargo duration is **90 calendar days** from report receipt (Day 0), consistent with the [Google Project Zero disclosure policy](https://googleprojectzero.blogspot.com/2021/04/policy-and-disclosure-2021-edition.html). During this period, details of the vulnerability **MUST NOT** be disclosed publicly.
 2. **Disclosure**: Once a fix is available (or the embargo expires), the project **MUST** publish a security advisory containing:
    - A description of the vulnerability.
    - Affected versions.
@@ -147,14 +149,14 @@ Projects **MUST** follow a coordinated disclosure process:
    - The CVE identifier (if assigned).
    - Remediation steps or patched versions.
 3. **Advisory publication**: Projects **MUST** publish advisories for all confirmed vulnerabilities with a CVSS score ≥ 4.0 via the platform's advisory mechanism.
-4. **Release notes**: Projects **MUST** reference CVE identifiers and advisory links in the release notes of patched versions.
+4. **Release notes**: Projects **MUST** reference advisory links in the release notes of patched versions. When a CVE has been assigned (see [Section 6.4](#64-cve-assignment)), the CVE identifier **MUST** also be referenced.
 5. **Changelogs**: Release changelogs **SHOULD** explicitly flag security-relevant modifications (fixes, dependency updates addressing CVEs, configuration changes with security impact).
 6. **Advisory history**: Projects **SHOULD** maintain a public record of past security advisories accessible from the project's `SECURITY.md`.
 7. **Early disclosure**: If active exploitation is detected in the wild, the TSC **MAY** shorten the embargo period and disclose early with whatever fix or mitigation is available.
 
 ### 6.6 Post-Disclosure
 
-The fix **MUST** be released in a patch version for all supported release branches. The CVE and advisory **SHOULD** be referenced in the release notes of the patched version.
+The fix **MUST** be released in a patch version for all supported release branches. The advisory **MUST** be referenced in the release notes of the patched version. The CVE identifier **SHOULD** also be referenced when assigned (see [Section 6.4](#64-cve-assignment)).
 
 ---
 
@@ -162,7 +164,7 @@ The fix **MUST** be released in a patch version for all supported release branch
 
 Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** exercise judgment when the CVSS score does not fully reflect practical impact.
 
-Projects **MUST** publish a security advisory within the 90-day disclosure ceiling defined in [Section 6.5](#65-coordinated-disclosure). Within that ceiling, projects **SHOULD** aim for the following response targets:
+Projects **MUST** publish a security advisory within the 90-day disclosure ceiling defined in [Section 6.5](#65-coordinated-disclosure). Within that ceiling, projects **SHOULD** aim for the following response targets (measured from report receipt, Day 0):
 
 | Severity     | CVSS Score | Fix Target             | Disclosure Target      |
 |--------------|------------|------------------------|------------------------|
@@ -171,12 +173,12 @@ Projects **MUST** publish a security advisory within the 90-day disclosure ceili
 | **Medium**   | 4.0 – 6.9  | ≤ 90 calendar days    | ≤ 90 calendar days     |
 | **Low**      | 0.1 – 3.9  | Best effort            | Best effort            |
 
-- **Fix Target**: Time from triage completion to a fix being merged.
-- **Disclosure Target**: Time from triage completion to publishing a security advisory. The disclosure **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
+- **Fix Target**: Time from report receipt to a fix being merged.
+- **Disclosure Target**: Time from report receipt to publishing a security advisory. The disclosure **MUST NOT** exceed the 90-day embargo defined in [Section 6.5](#65-coordinated-disclosure).
 
 If a project cannot meet a fix target, the TSC **SHOULD** communicate an updated timeline to the reporter and publish a mitigation or workaround advisory.
 
-The 90-day ceiling aligns with the [OpenSSF Vulnerability Disclosure Guide](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md) and Google Project Zero. Severity-based fix targets are **SHOULD**-level goals — volunteer-maintained projects cannot guarantee timelines the way commercial vendors can.
+The 90-day ceiling aligns with the [Google Project Zero disclosure policy](https://googleprojectzero.blogspot.com/2021/04/policy-and-disclosure-2021-edition.html) and the [OpenSSF Vulnerability Disclosure Guide](https://github.com/ossf/oss-vulnerability-guide/blob/main/maintainer-guide.md). All timelines start from report receipt (Day 0), following Project Zero's practice of measuring from vendor notification. Severity-based fix targets are **SHOULD**-level goals — volunteer-maintained projects cannot guarantee timelines the way commercial vendors can.
 
 ---
 
@@ -218,14 +220,15 @@ Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy ke
 
 ### 9.2 CI/CD Security
 
-- Projects **MUST** require approval for first-time contributors before workflows execute on fork pull requests.
-- The default `GITHUB_TOKEN` permission **MUST** be set to read-only.
-- Write access **SHOULD** be explicitly requested via the `permissions` key in workflow files.
-- Projects **SHOULD** use workload identities (OIDC) or short-lived tokens for interactions with external services.
-- Third-party actions **SHOULD** be pinned to a specific commit SHA rather than a mutable tag.
+- Projects **MUST** require approval for first-time contributors before CI/CD workflows execute on fork pull requests.
+- The default CI/CD token permission **MUST** be set to read-only (repository contents and packages). On GitHub, this means the `GITHUB_TOKEN` default; on GitLab, configure [protected CI/CD variables](https://docs.gitlab.com/ee/ci/variables/#protect-a-cicd-variable) with minimal scope.
+- Write access **SHOULD** be explicitly requested per job or workflow. On GitHub, use the `permissions` key in workflow files. On GitLab, use protected environments and approval gates.
+- Projects **SHOULD** use workload identities (OIDC) or short-lived access tokens for interactions with external services.
+- Third-party CI/CD actions or templates **SHOULD** be pinned to a specific commit SHA or immutable digest rather than a mutable tag. On GitHub, pin actions by SHA (e.g., `actions/checkout@<sha>`). On GitLab, pin included templates by ref.
 - Workflows **SHOULD** treat all externally supplied metadata as untrusted input and sanitize it before use in shell commands.
+- Workflows triggered by events from untrusted sources (e.g., on GitHub: `pull_request_target`, `issue_comment`; on GitLab: merge request pipelines from forks) **SHOULD NOT** execute untrusted code in a context with access to repository secrets.
 - Projects **SHOULD** conduct package releases via CI/CD pipelines rather than from local machines.
-- Repository-level self-hosted runners **SHOULD NOT** be enabled unless approved by organization administrators.
+- Repository-level self-hosted runners **SHOULD NOT** be enabled unless approved by platform administrators.
 
 See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-AC-04.01`, `OSPS-AC-04.02`, `OSPS-BR-01.01`.
 
@@ -285,9 +288,10 @@ Each requirement carries a conformance priority and a resolution timeframe. The 
 | Section 8 | Artifact signing, SLSA provenance, SBOM | **SHOULD** | When publishing | TSC |
 | Section 9 | 2FA for all organization members | **MUST** | ≤30 days | TSC |
 | Section 9 | Branch protection on primary branch | **MUST** | ≤30 days | TSC |
-| Section 9 | Secret scanning and push protection | **MUST** | ≤30 days | TSC |
+| Section 9 | Secret scanning | **MUST** | ≤30 days | TSC |
+| Section 9 | Push protection | **SHOULD** | ≤30 days | TSC |
 | Section 9 | First-time contributor CI approval | **MUST** | ≤30 days | TSC |
-| Section 9 | Default GITHUB_TOKEN read-only | **MUST** | ≤30 days | TSC |
+| Section 9 | Default CI/CD token read-only | **MUST** | ≤30 days | TSC |
 | Section 9 | OIDC/short-lived tokens, action pinning, input sanitization | **SHOULD** | ≤90 days | TSC |
 | Section 9 | Access governance and maintainer vetting | **SHOULD** | ≤90 days | TSC |
 | Section 9 | SAST scanning | **SHOULD** | ≤90 days | TSC |
