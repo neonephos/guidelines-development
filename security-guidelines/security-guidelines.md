@@ -75,7 +75,7 @@ Every project with publishable code or artifacts **MUST** complete these items. 
 7. Scan dependencies for known vulnerabilities ([Section 8.4](#84-software-composition-analysis-sca))
 8. Enforce 2FA for all organization members ([Section 9.1](#91-authentication))
 9. Enable branch protection on primary branch ([Section 9.3](#93-branch-protection))
-10. Enable secret scanning ([Section 9.4](#94-secret-scanning))
+10. Enable secret scanning and push protection ([Section 9.4](#94-secret-scanning))
 11. Require approval for first-time contributor CI workflows ([Section 9.2](#92-cicd-security))
 12. Set default CI/CD token to read-only ([Section 9.2](#92-cicd-security))
 
@@ -246,7 +246,7 @@ Projects **MUST** enable branch protection rules on the primary branch (e.g., `m
 
 Projects **MUST** enable automated secret scanning on all repositories to detect accidentally committed credentials, API keys, and tokens.
 
-Projects **SHOULD** enable push protection to block commits containing detected secrets before they enter the repository history.
+Projects **MUST** enable push protection to block commits containing detected secrets before they enter the repository history.
 
 ### 9.5 Access Governance
 
