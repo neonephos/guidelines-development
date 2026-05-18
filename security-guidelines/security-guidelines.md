@@ -276,7 +276,7 @@ Projects **SHOULD** define a severity threshold and gate the CI pipeline on it.
 
 ### 9.7 Security Assessment and Posture Verification
 
-Projects **SHOULD** perform an initial security assessment when entering the Growth or Graduated lifecycle stage, covering trust boundaries, a lightweight threat model, and documentation of known security assumptions and residual risks.
+Projects **SHOULD** perform an initial security assessment when entering the Growth or Graduated lifecycle stage, covering trust boundaries, a lightweight threat model (e.g., [STRIDE](https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool-threats), the [OWASP Threat Modeling Process](https://owasp.org/www-community/Threat_Modeling_Process), or [CNCF Cloud Native Security Whitepaper §6](https://github.com/cncf/tag-security/blob/main/security-whitepaper/v2/cloud-native-security-whitepaper.md)), and documentation of known security assumptions and residual risks. The [OpenSSF Security Reviews repository](https://github.com/ossf/security-reviews) collects example reviews from other open-source projects.
 
 Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/scorecard) on all repositories containing publishable code. Scorecard provides automated checks for many of the requirements in this document, including branch protection, dependency scanning, CI permissions, and vulnerability disclosure.
 
