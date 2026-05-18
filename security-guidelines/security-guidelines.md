@@ -217,9 +217,9 @@ This section defines security-relevant operational controls for NeoNephos projec
 
 ### 9.1 Authentication
 
-Projects **MUST** enforce Two-Factor Authentication (2FA) for all organization members.
+Projects **MUST** enforce Two-Factor Authentication (2FA) for all members of the project's source-control, CI/CD, and artifact-publishing accounts (e.g., the project's GitHub or GitLab organization, container and package registries).
 
-Projects **SHOULD** disable SSH deploy keys at the organization level. Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
+Projects **SHOULD** disable SSH deploy keys at the source-control organization level (e.g., the GitHub or GitLab organization owning the project's repositories). Deploy keys lack per-user accountability; personal or machine accounts with MFA are preferred.
 
 ### 9.2 CI/CD Security
 
