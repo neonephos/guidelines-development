@@ -58,6 +58,8 @@ This document covers:
 - **Supply chain security**: Requirements for signing, provenance, SBOMs, and dependency management of released artifacts.
 - **Operational security controls**: Authentication, CI/CD security, access governance, and code scanning requirements.
 
+This document covers security controls applied during the **development, build, and release lifecycle** of NeoNephos projects. Runtime security of services deployed by consumers of these projects is out of scope.
+
 For the purposes of this document, a repository contains **publishable code or artifacts** if it produces software that is distributed to users or other systems — including libraries, binaries, container images, Helm charts, CLI tools, SDKs, or any package published to a registry. Repositories that contain only documentation, governance files, or meeting notes are excluded.
 
 ---
