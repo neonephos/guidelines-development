@@ -260,7 +260,13 @@ Projects **SHOULD** follow the principle of least privilege for all access grant
 - Use pull requests for all repository changes.
 - Maintain an up-to-date inventory of maintainer permissions across all platforms used by the project.
 
-Projects **SHOULD** require that maintainer candidates have a sustained history of contributions, are vouched for by an existing maintainer, and have verified their real identity with an existing maintainer, preferably in person. Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)).
+Before granting commit or release access to a new maintainer, projects **SHOULD** verify that the candidate:
+
+1. has a sustained history of substantive contributions to the project,
+2. is vouched for by at least one existing maintainer, and
+3. has had their real identity verified by an existing maintainer (preferably in person, or via an equivalent channel such as a video call against a previously verified identity).
+
+Vetting contributors before granting commit or release access mitigates supply chain risks from compromised or malicious accounts (cf. the [xz-utils incident](https://en.wikipedia.org/wiki/XZ_Utils_backdoor)).
 
 ### 9.6 Code Quality and Scanning
 
