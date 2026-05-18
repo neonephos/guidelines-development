@@ -205,7 +205,7 @@ Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each publis
 - Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
 - Projects **SHOULD** remediate known vulnerabilities of medium or higher severity within 60 calendar days of public disclosure, per [OpenSSF Best Practices](https://www.bestpractices.dev/).
 - Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry.
-- Projects **SHOULD** automate license scanning of all dependencies and define an allowlist of acceptable licenses.
+- Projects **SHOULD** automate license scanning of all dependencies and define an allowlist of acceptable licenses. The allowlist is defined by the project's TSC and **MUST** be compatible with the project's own license and the [foundation licensing policy](../project-guidelines/project-guidelines.md#6-licensing).
 
 See [OpenSSF Security Baseline](https://baseline.openssf.org/) controls `OSPS-VM-05.01` through `OSPS-VM-05.03` and `OSPS-LE-02.01`, `OSPS-LE-02.02`.
 
