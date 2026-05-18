@@ -164,7 +164,7 @@ The fix **MUST** be released in a patch version for all supported release branch
 
 ## 7. Severity Classification and Response Targets
 
-Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** exercise judgment when the CVSS score does not fully reflect practical impact.
+Projects **MUST** classify vulnerabilities using [CVSS v3.1](https://www.first.org/cvss/v3.1/specification-document) or later. Maintainers **MAY** adjust the assigned severity (up or down) when the CVSS base score does not reflect real-world impact — for example, mitigating default configurations or evidence of active exploitation. Any deviation **MUST** be documented in the published advisory together with the original CVSS score and rationale.
 
 Projects **MUST** publish a security advisory within the 90-day disclosure ceiling defined in [Section 6.5](#65-coordinated-disclosure). Within that ceiling, projects **SHOULD** aim for the following response targets (measured from report receipt, Day 0):
 
