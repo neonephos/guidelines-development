@@ -286,6 +286,8 @@ Projects **SHOULD** enable the [OpenSSF Scorecard](https://github.com/ossf/score
 
 Each requirement carries a conformance priority and a resolution timeframe. The TSC of each project is the responsible owner for all requirements.
 
+The **Resolution** column is measured from the date a requirement first applies to a project — the latest of: the requirement's effective date, the project's onboarding date, or the lifecycle stage at which the requirement applies. Effective dates for new or amended requirements are set by the TAC.
+
 | Section | Requirement | Priority | Resolution | Owner |
 |---------|-------------|----------|------------|-------|
 | Section 5 | Private vulnerability intake channel | **MUST** | ≤30 days | TSC |
