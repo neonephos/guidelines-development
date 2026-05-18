@@ -5,12 +5,13 @@
      - Remove sections that don't apply to your hosting platform (keep only the
        relevant "Option" under "Reporting a Vulnerability").
      - Remove all HTML comments (like this one) before publishing.
-     - For projects with multiple repositories, each repository containing
-       publishable code or artifacts MUST have its own SECURITY.md. On GitHub,
-       a SECURITY.md placed in the organization's `.github` repository serves
-       as the default for all repositories that do not have their own — this
-       satisfies the per-repository requirement, but cannot include
-       repository-specific direct links (see Option A below).
+     - On GitHub, a SECURITY.md in the organization's `.github` repository
+       is automatically used by every repository without its own — this
+       satisfies the per-repository requirement, except where a repository
+       needs its own intake link or contacts (then commit a per-repository
+       SECURITY.md that overrides the org default).
+     - GitLab has no equivalent fall-through; each GitLab project needs
+       its own SECURITY.md.
      - See the NeoNephos Security Guidelines for the full set of requirements:
        https://github.com/neonephos/guidelines-development/blob/main/security-guidelines/security-guidelines.md
 -->
