@@ -105,6 +105,8 @@ Projects **MUST** provide a `SECURITY.md` file in every repository that contains
 
 A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md).
 
+For multi-repository projects, the per-repository requirement **MAY** be satisfied by an organization-level `SECURITY.md` where the platform supports fall-through — on GitHub, a `SECURITY.md` in the `.github` repository applies to every repository without its own. A repository **MUST** override the org-level file with its own `SECURITY.md` when it needs repository-specific intake links or contacts. GitLab projects **MUST** provide a `SECURITY.md` per project.
+
 ---
 
 ## 6. Vulnerability Response Process
