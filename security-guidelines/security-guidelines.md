@@ -261,7 +261,9 @@ Projects **SHOULD** require that maintainer candidates have a sustained history 
 
 ### 9.6 Code Quality and Scanning
 
-Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities. Projects **SHOULD** define a severity threshold and gate the CI pipeline on it.
+Projects **SHOULD** enable static application security testing (SAST) to detect code-level vulnerabilities.
+
+Projects **SHOULD** define a severity threshold and gate the CI pipeline on it.
 
 ### 9.7 Security Assessment and Posture Verification
 
