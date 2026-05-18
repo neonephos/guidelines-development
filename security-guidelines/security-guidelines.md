@@ -255,8 +255,8 @@ Projects **MUST** enable push protection to block commits containing detected se
 
 Projects **SHOULD** follow the principle of least privilege for all access grants:
 
-- Limit organization owner access to a small number of administrative accounts.
-- Limit the number of maintainers with repository admin permissions.
+- Limit organization owner / global admin accounts to the minimum needed for continuity in the absence of one or two individuals (typically **2–5**). Owner accounts **MUST** be human, named accounts (no shared accounts) with 2FA enforced.
+- Grant repository **admin** permissions only to maintainers who need them for repository configuration (branch protection, secrets, releases). Routine review and merge work **SHOULD** use the lower **maintain** or **write** role.
 - Use pull requests for all repository changes.
 - Maintain an up-to-date inventory of maintainer permissions across all platforms used by the project.
 
