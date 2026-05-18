@@ -200,7 +200,8 @@ Projects **SHOULD** generate a Software Bill of Materials (SBOM) for each publis
 
 ### 8.4 Software Composition Analysis (SCA)
 
-- Projects **MUST** scan direct and transitive dependencies for known vulnerabilities.
+- Projects **MUST** scan direct and transitive dependencies for known vulnerabilities on every change to the codebase or its dependency manifests, against a documented severity threshold, and **MUST** block changes that violate the threshold (per [OpenSSF Baseline](https://baseline.openssf.org/) `OSPS-VM-05.01`, `OSPS-VM-05.03`).
+- Scan results **SHOULD** be visible via the platform's standard mechanism (e.g., GitHub Dependabot alerts, GitLab Security dashboard) so that conformance is externally verifiable.
 - Projects **SHOULD** configure automated dependency update pull requests to reduce time-to-remediation.
 - Projects **SHOULD** remediate known vulnerabilities of medium or higher severity within 60 calendar days of public disclosure, per [OpenSSF Best Practices](https://www.bestpractices.dev/).
 - Projects that publish container images **SHOULD** scan all images for known vulnerabilities before pushing them to a registry.
