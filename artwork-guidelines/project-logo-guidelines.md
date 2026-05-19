@@ -2,7 +2,6 @@
 
 ## Introduction
 
-These logo guidelines only relate to projects that can provide a logo themselves. 
 **If your project doesn't have a logo yet and you have no designers available, we're happy to help out with this!** Please feel free to reach out anytime, and we can develop a logo (or any other needed artwork) together.
 
 ## Preamble
