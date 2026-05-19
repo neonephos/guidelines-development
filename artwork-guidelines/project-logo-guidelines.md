@@ -1,5 +1,9 @@
 # Logo Requirements for new Projects
 
+## Introduction
+
+**If your project doesn't have a logo yet and you have no designers available, we're happy to help out with this!** Please feel free to reach out anytime, and we can develop a logo (or any other needed artwork) together.
+
 ## Preamble
 
 The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT**, **RECOMMENDED** and **MAY** in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119.html) and [RFC 8174](https://www.rfc-editor.org/rfc/rfc8174.html).
