@@ -159,7 +159,7 @@ Projects in the Growth stage are generally expected to move out of the Growth st
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Growth Stage.
+* The project must maintain a public list of project adopters for at least the primary repository (e.g., via an ADOPTERS.md file or prominently displayed logos on the project website).
 
 ##### Approval Process
 
