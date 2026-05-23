@@ -14,15 +14,15 @@ The onboarding process ensures that new projects adopt baseline governance, tech
 
 **Governance and Administration**
 
-* **MUST** publish a project charter (canonical + Markdown).
-* **MUST** adopt the Linux Foundation Code of Conduct.
+* **MUST** link to the project charter hosted by the Linux Foundation.
+* **MUST** adopt the [NeoNephos Code of Conduct](https://github.com/neonephos/.github/blob/main/CODE_OF_CONDUCT.md).
 * **MUST** provide `CONTRIBUTING.md` with DCO/CLA details.
 * **MUST** document maintainers and TSC members publicly.
 * **MUST** designate a Security Officer.
 
 **Technical and Development Practices**
 
-* **MUST** use LF-approved licenses (SPDX or REUSE).
+* **MUST** use licenses approved through their Project Charter (SPDX or REUSE).
 * **MUST** enable CI for builds, tests, linting, and security scanning.
 * **MUST** provide `SECURITY.md` with disclosure policy and contacts.
 * **MUST** track third-party licenses.
