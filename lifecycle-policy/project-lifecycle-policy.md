@@ -1,6 +1,6 @@
 # NeoNephos Foundation Project Lifecycle Policy
 
-Version 2, June 2026
+Version 2
 
 ## Policy Revision Process
 
@@ -12,7 +12,7 @@ All updates to the policy are recorded and communicated to stakeholders to maint
 
 This governance policy describes how an open-source project can formally join the NeoNephos Foundation via the Project Proposal Process. It describes the Stages a project may be admitted under, the criteria and expectations for each stage, and the Acceptance Criteria for progressing from one stage to another. It also describes the Annual Review Process through which those changes will be evaluated and made.
 
-Project progression — the movement from one stage to another — allows projects to participate at the level that is most appropriate for them given where they are in their lifecycle. Regardless of stage, all NeoNephos Foundation projects benefit from closer alignment with existing projects, and from access to mentorship, support, and Foundation resources.
+Project progression - the movement from one stage to another - allows projects to participate at the level that is most appropriate for them given where they are in their lifecycle. Regardless of stage, all NeoNephos Foundation projects benefit from closer alignment with existing projects, and from access to mentorship, support, and Foundation resources.
 
 Capitalized terms not otherwise defined in this Project Lifecycle Policy have the meanings ascribed to them in the NeoNephos Foundation Directed Fund Charter. A "simple majority vote" is defined in this document as an affirmative vote of more than half of the votes cast. A "supermajority vote" is defined in this document as an affirmative vote of at least 2/3 of all active representatives eligible to vote.
 
@@ -50,7 +50,7 @@ Projects must be formally proposed. Project proposals submitted to the NeoNephos
 
 * Project name
 * Project description (what it does, why it is valuable, origin and history)
-* List of adopters, case studies, or testimonials (if any)
+* List of adopters, case studies, or testimonials (optional)
 * Description of how contributors are promoted to committer status
 * Statement on alignment with the NeoNephos Foundation mission
 * Link to current Code of Conduct (if one is already adopted)
@@ -62,7 +62,7 @@ Projects must be formally proposed. Project proposals submitted to the NeoNephos
 * Names of initial committers, if different from those submitting the proposal
 * Brief description of the project’s leadership team and decision-making process
 * Link to any documented governance practices
-* List of the project's official communication channels (Slack, Discord, Matrix, mailing lists, etc.)
+* List of the project's official communication channels (Zulip, Slack, Discord, Matrix, mailing lists, etc.)
 * Link to the project’s website
 * Links to social media accounts
 * Existing financial sponsorship
@@ -77,7 +77,7 @@ Projects must be formally proposed. Project proposals submitted to the NeoNephos
 * The project must satisfy the requirements of its initial stage. The TAC will determine the appropriate initial stage; the project may apply for a different stage via the review process.
 * Projects must be accepted per the Approval Process outlined for the initial stage of the project.
 
-## Stages — Definitions and Expectations
+## Stages - Definitions and Expectations
 
 Every NeoNephos Foundation project has an associated maturity level called a Stage.
 
@@ -157,7 +157,7 @@ Sandbox projects can prominently display on their website/README their status as
 
 #### Definition
 
-The Incubation Stage is for projects that have a clear purpose and a realistic path toward becoming a mature NeoNephos Foundation project. Unlike Sandbox Stage projects, Incubation projects are not experimental — they have committed to a direction and intend to progress toward the Growth or Graduated Stages. The Incubation Stage provides a neutral home to foster community development and deeper alignment with the Foundation while the project builds toward maturity.
+The Incubation Stage is for projects that have a clear purpose and a realistic path toward becoming a mature NeoNephos Foundation project. Unlike Sandbox Stage projects, Incubation projects are not experimental - they have committed to a direction and intend to progress toward the Growth or Graduated Stages. The Incubation Stage provides a neutral home to foster community development and deeper alignment with the Foundation while the project builds toward maturity.
 
 ##### Examples
 
