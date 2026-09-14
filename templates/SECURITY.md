@@ -142,6 +142,14 @@ We follow [coordinated disclosure](https://en.wikipedia.org/wiki/Coordinated_vul
 
 We are committed to crediting reporters in our security advisories unless you prefer to remain anonymous.
 
+## CRA Stewardship
+
+CRA stewardship: This project is supported under the Linux Foundation CRA stewardship framework, as described at https://www.linuxfoundation.org/security. Security vulnerabilities should be reported through the mechanisms described above, which we will coordinate with our CRA steward. For actively exploited vulnerabilities and severe incidents that may require CRA escalation, please use the project's emergency security reporting mechanisms as appropriate.
+
+**CRA Steward Contact**: `steward@linuxfoundation.org`
+
+For more information, see the [NeoNephos Security Guidelines §11](https://github.com/neonephos/guidelines-development/blob/main/security-guidelines/security-guidelines.md#11-eu-cyber-resilience-act-cra-compliance).
+
 ## Past Security Advisories
 
 <!-- Optional — include this section only if your project has published

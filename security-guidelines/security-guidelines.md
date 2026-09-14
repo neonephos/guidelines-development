@@ -31,7 +31,8 @@
     * [9.6 Code Quality and Scanning](#96-code-quality-and-scanning)
     * [9.7 Security Assessment and Posture Verification](#97-security-assessment-and-posture-verification)
   * [10. Conformance Matrix](#10-conformance-matrix)
-  * [11. Acknowledgements](#11-acknowledgements)
+  * [11. EU Cyber Resilience Act (CRA) Compliance](#11-eu-cyber-resilience-act-cra-compliance)
+  * [12. Acknowledgements](#12-acknowledgements)
 <!-- TOC -->
 
 ## 1. Introduction
@@ -80,6 +81,8 @@ Every project with publishable code or artifacts **MUST** complete these items. 
 10. Enable secret scanning and push protection ([Section 9.4](#94-secret-scanning))
 11. Require approval for first-time contributor CI workflows ([Section 9.2](#92-cicd-security))
 12. Set default CI/CD token to read-only ([Section 9.2](#92-cicd-security))
+13. Determine whether software is commercially intended; document in SECURITY.md ([Section 11](#11-eu-cyber-resilience-act-cra-compliance))
+14. Add CRA stewardship statement to SECURITY.md ([Section 11](#11-eu-cyber-resilience-act-cra-compliance))
 
 ---
 
@@ -102,6 +105,7 @@ Projects **MUST** provide a `SECURITY.md` file in every repository that contains
 1. Instructions for reporting a vulnerability via the project's private intake channel (see [Section 5.1](#51-private-vulnerability-intake-channel)), including a direct link where applicable.
 2. A version support policy stating which releases receive security updates.
 3. The expected response timeline (referencing [Section 6](#6-vulnerability-response-process) of this document).
+4. A CRA stewardship statement for projects with publishable software (see [Section 11](#11-eu-cyber-resilience-act-cra-compliance)).
 
 A template is available at [`../templates/SECURITY.md`](../templates/SECURITY.md).
 
@@ -311,9 +315,60 @@ The **Resolution** column is measured from the date a requirement first applies 
 | Section 9 | Access governance and maintainer vetting | **SHOULD** | ≤90 days | TSC |
 | Section 9 | SAST scanning | **SHOULD** | ≤90 days | TSC |
 | Section 9 | Security assessment and Scorecard | **SHOULD** | ≤90 days | TSC |
+| Section 11 | Determine and document commercial intent | **MUST** | ≤60 days | TSC |
+| Section 11 | Add CRA stewardship statement to SECURITY.md | **MUST** | ≤60 days | TSC |
+| Section 11 | Escalate actively exploited vulns/severe incidents to steward within 24h | **MUST** | Ongoing | TSC |
 
 ---
 
-## 11. Acknowledgements
+## 11. EU Cyber Resilience Act (CRA) Compliance
+
+Starting September 11, 2026, the EU Cyber Resilience Act (CRA) requires Open Source Software stewards to report actively exploited vulnerabilities and severe security incidents affecting digital products in the EU market.
+
+### 11.1 How CRA Applies to NeoNephos Projects
+
+NeoNephos projects are covered under the **Linux Foundation's CRA stewardship framework**. The Linux Foundation, as our CRA steward, is registered on ENISA's single reporting platform and handles all regulatory notifications on behalf of our projects.
+
+**Your project does not need to build a separate CRA compliance function.** The Linux Foundation manages regulatory reporting. Your project's responsibilities are:
+
+1. **Determine and document whether your software is commercially intended.**
+   - Most NeoNephos projects are intended for commercial use (widely adopted in commercial contexts).
+   - Document this determination in your project's `SECURITY.md`.
+
+2. **Add the CRA stewardship statement to your SECURITY.md** (see [Section 5.2](#52-securitymd) and the [SECURITY.md template](../templates/SECURITY.md)).
+
+3. **Know the escalation rule** (see [Section 11.2](#112-escalation-for-actively-exploited-vulnerabilities-and-severe-incidents)).
+
+### 11.2 Escalation for Actively Exploited Vulnerabilities and Severe Incidents
+
+If you become aware of an **actively exploited vulnerability** or a **severe security incident** (e.g., compromise of your release process or CI/CD infrastructure):
+
+- **Notify the LF CRA steward immediately** (within 24 hours of awareness)
+  - Email: `steward@linuxfoundation.org`
+  - Include a brief description of the vulnerability or incident, affected versions (if applicable), and when you became aware of it
+- **Continue fixing the vulnerability or incident in parallel** — do not delay remediation waiting for steward coordination
+- The steward will coordinate regulatory notifications as required by CRA
+
+See your project's `SECURITY.md` for full vulnerability reporting mechanisms.
+
+### 11.3 Resources
+
+- [Linux Foundation CRA Policy and Resources](https://www.linuxfoundation.org/security)
+- [ENISA Single Reporting Platform](https://reporting.enisa.europa.eu)
+- [Understanding the EU Cyber Resilience Act (CRA)](https://learn.linuxfoundation.org/) — Free LF course (LFEL1001)
+
+### 11.4 Conformance
+
+All NeoNephos projects that publish software **MUST**:
+
+- Determine whether the software is commercially intended (typically: YES) and document this in SECURITY.md
+- Add the CRA stewardship statement to SECURITY.md per [Section 5.2](#52-securitymd)
+- Understand and follow the escalation rule in [Section 11.2](#112-escalation-for-actively-exploited-vulnerabilities-and-severe-incidents)
+
+**Resolution timeframe**: ≤60 days from this requirement's effective date
+
+---
+
+## 12. Acknowledgements
 
 Projects **SHOULD** credit security researchers who responsibly report vulnerabilities, unless the reporter requests anonymity.
