@@ -50,7 +50,7 @@ Projects must be formally proposed. Project proposals submitted to the NeoNephos
 
 * Project name
 * Project description (what it does, why it is valuable, origin and history)
-* List of adopters, case studies, or testimonials (optional)
+* List of adopters, case studies, and testimonials (optional)
 * Description of how contributors are promoted to committer status
 * Statement on alignment with the NeoNephos Foundation mission
 * Link to current Code of Conduct (if one is already adopted)
@@ -70,14 +70,15 @@ Projects must be formally proposed. Project proposals submitted to the NeoNephos
 
 ### Project Acceptance Process
 
+* Projects must submit a formal Project Proposal as described on the NeoNephos Foundation website.
 * Projects must find a TAC Sponsor to champion the project and provide mentorship as needed.
-* Projects must provide a Technical Charter and agree to transfer any relevant trademarks and assets to the NeoNephos Foundation (see above).
+* Projects must provide a Technical Charter and approve and complete the transfer of any relevant trademarks and assets to the NeoNephos Foundation (see [Technical Charter and Intellectual Property (IP) Transfer](#technical-charter-and-intellectual-property-ip-transfer)).
 * Projects must present their proposal at a TAC meeting.
 * The TAC may ask for changes to bring the project into better alignment with the NeoNephos Foundation. The project must make these changes to progress further.
 * The project must satisfy the requirements of its initial stage. The TAC will determine the appropriate initial stage; the project may apply for a different stage via the review process.
 * Projects must be accepted per the Approval Process outlined for the initial stage of the project.
 
-## Stages - Definitions and Expectations
+## Stages: Definitions and Expectations
 
 Every NeoNephos Foundation project has an associated maturity level called a Stage.
 
@@ -97,6 +98,8 @@ Projects are assigned to a stage and progress through stages based on two major 
 * The level of project adoption.
 
 Projects can request a stage progression at any time, and the TAC will evaluate the request based on the criteria outlined in this policy. The TAC may also initiate a stage review for a project if it determines that a project’s current stage may no longer be appropriate.
+
+When progressing to a new stage, a project must satisfy the acceptance criteria of that stage as well as all acceptance criteria of every prior stage.
 
 When a new project joins or a project progresses to a new stage, the TAC will publicly document the rationale for the stage assignment or progression, including the evidence considered and how it was evaluated.
 
@@ -118,7 +121,7 @@ The TAC will assess the activity of a project’s community and maintainers, for
 
 Adoption by other open-source projects, commercial products or entities, and end users can indicate a project’s success and impact. As such, it is a factor in determining the appropriate stage for a project and in justifying progression to a more mature stage.
 
-Projects are encouraged to maintain a public `ADOPTERS.md` file in their repository that lists known adopters and to provide a straightforward, public process for adopters to add themselves or request removal (e.g., via a pull request or issue). This file should be easy to find from the project’s website or README. Projects may also provide a dedicated web page showcasing their adopters, case studies, or testimonials.
+Projects are encouraged to maintain a public `ADOPTERS.md` file in their repository that lists known adopters and to provide a straightforward, public process for adopters to add themselves or request removal (e.g., via a pull request or issue). This file should be easy to find from the project’s website or README. Projects may also provide a dedicated web page showcasing their adopters, case studies, and testimonials.
 
 Measuring adoption can be challenging due to the nature of a project, the audience it serves, and the use cases it supports. Moreover, adoption does not always correlate with the depth or criticality of usage, and terminology around usage levels can be ambiguous. In some cases, adopters may not be able to disclose their use of a project.
 
@@ -128,7 +131,7 @@ Therefore, the TAC will assess, on a case-by-case basis, whether the evidence of
 
 #### Definition
 
-The Sandbox Stage is for projects whose value or direction has not yet been established. These are exploratory efforts, and the TAC believes they are worth pursuing, but the project has not yet demonstrated the intent or readiness to progress through the full lifecycle. The Sandbox Stage is a time-limited space to experiment, validate, and build an initial community; it is not intended as a permanent stage.
+The Sandbox Stage is for projects whose value or direction has not yet been established. These are exploratory efforts, and the TAC believes they are worth pursuing, but the project has not yet demonstrated the intent or readiness to progress through the full lifecycle. Projects may enter the Sandbox Stage with no more than a high-level proof-of-concept or conceptual proposal. The Sandbox Stage is a time-limited space to experiment, validate, and build an initial community; it is not intended as a permanent stage.
 
 ##### Examples
 
@@ -143,7 +146,7 @@ Projects should remain in the Sandbox Stage for no more than one year, unless th
 
 To be considered for the Sandbox Stage, the project must meet the following requirements:
 
-* A Project Proposal must be submitted (as defined above).
+* A Project Proposal must be submitted (see [Project Proposal Process](#project-proposal-process)).
 
 ##### Approval Process
 
@@ -174,9 +177,10 @@ End users should evaluate Incubation projects with care, as this stage does not 
 
 To be considered for the Incubation Stage, the project must meet the following requirements:
 
-* For new projects, a Project Proposal must be submitted (as defined above).
+* For new projects, a Project Proposal must be submitted (see [Project Proposal Process](#project-proposal-process)).
 * Existing projects must request to be considered for the Incubation Stage.
-* Demonstrated adoption (as defined above) by at least one end user, commercial entity, or open-source project is encouraged but not required.
+* The project must have a code repository containing an initial implementation beyond proof-of-concept stage.
+* Demonstrated adoption (see [Project Adoption](#project-adoption)) by at least one end user, commercial entity, or open-source project is encouraged but not required.
 
 ##### Approval Process
 
@@ -209,9 +213,9 @@ Projects in the Growth Stage are generally expected to move out of the Growth St
 
 ##### Acceptance Criteria
 
-* For new projects, a Project Proposal must be submitted (as defined above).
+* For new projects, a Project Proposal must be submitted (see [Project Proposal Process](#project-proposal-process)).
 * Existing projects must request to be considered for the Growth Stage.
-* Demonstrated adoption (as defined above) by at least one end user, commercial entity, or open-source project, indicating the project is beyond the early stage.
+* Demonstrated adoption (see [Project Adoption](#project-adoption)) by at least one end user, commercial entity, or open-source project, indicating the project is beyond the early stage.
 * The project has at least three active maintainers from at least two different organizations.
 
 ##### Approval Process
@@ -232,7 +236,7 @@ The Graduated Stage is for projects that have reached their growth goals and hav
 
 ##### Examples
 
-* Projects that have publicly documented release cycles and plans for Long-Term Support ("LTS").
+* Projects that have publicly documented release cycles, have a project-specific definition of Long-Term Support ("LTS"), and plan for executing the LTS strategy.
 * Projects that have themselves become platforms for other projects.
 * Projects that are able to attract a healthy number of committers on the basis of their production usefulness, not merely on the size of their developer community or public profile.
 * Projects that have several high-profile or well-known end-user implementations.
@@ -243,19 +247,18 @@ Graduated Stage projects are expected to actively participate in TAC proceedings
 
 ##### Acceptance Criteria
 
-* For new projects, a Project Proposal must be submitted (as defined above).
+* For new projects, a Project Proposal must be submitted (see [Project Proposal Process](#project-proposal-process)).
 * Existing projects must request to be considered for the Graduated Stage.
-* Demonstrated adoption (as defined above) by multiple end users, commercial entities, or open-source projects, indicating the project has achieved significant traction.
+* Demonstrated adoption (see [Project Adoption](#project-adoption)) by multiple end users, commercial entities, or open-source projects, indicating the project has achieved significant traction.
 * The project has at least six active maintainers from at least two different organizations.
-* No single organization holds a majority of TSC seats.  
-  _Exception:_ if a single organization holds more than 1/2 and no more than 2/3 of TSC seats, the TAC may grant a grace period of up to 12 months, provided the project has a clear plan to achieve compliance with the above requirement.
+* No single organization holds a majority of TSC seats.
 
 ##### Approval Process
 
 * The project must submit a request to the TAC for consideration to move to Graduated Stage.
 * The TAC will consider this request in an upcoming TAC meeting after the TAC has had sufficient time to review the request. The TAC may request that the project present at an upcoming TAC meeting, outlining how the project has satisfied the Acceptance Criteria described above.
 * The project must receive a supermajority vote from the TAC and the Governing Board to move to the Graduated Stage.
-* Projects may move directly from Incubation to Graduated if they can demonstrate sufficient maturity and have met all requirements.
+* Projects may move directly from Incubation to Graduated, bypassing the Growth Stage, if they can demonstrate sufficient maturity and have met all Graduated Stage criteria.
 
 ##### Benefits
 
