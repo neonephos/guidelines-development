@@ -159,7 +159,7 @@ Projects in the Growth stage are generally expected to move out of the Growth st
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Growth Stage.
+* The project must document that it is being used successfully in production by at least two independent organisations, which, in the TAC’s judgement, are of adequate quality and scope
 
 ##### Approval Process
 
@@ -190,7 +190,7 @@ Graduated Stage projects are expected to participate actively in TAC proceedings
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Graduated Stage.
+* The project must verify production use by at least 5 independent organisations, subject to formal TAC due diligence
 
 ##### Approval Process
 
