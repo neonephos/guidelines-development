@@ -159,7 +159,7 @@ Projects in the Growth stage are generally expected to move out of the Growth st
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Growth Stage.
+* The project must demonstrate a substantial ongoing flow of commits and merged contributions, driven by a minimum of three active maintainers from at least two different organisations
 
 ##### Approval Process
 
@@ -190,7 +190,7 @@ Graduated Stage projects are expected to participate actively in TAC proceedings
 
 ##### Acceptance Criteria
 
-The TAC has not yet defined requirements for the Graduated Stage.
+* The project must have a defined governing body (TSC or equivalent) of which no single organisation holds a majority (>50%) of the voting seats
 
 ##### Approval Process
 
