@@ -255,7 +255,7 @@ Projects **MUST** enable branch protection rules on the primary branch (e.g., `m
 
 Projects **MUST** enable automated secret scanning on all repositories to detect accidentally committed credentials, API keys, and tokens.
 
-Projects **MUST** enable push protection to block commits containing detected secrets before they enter the repository history.
+Projects **SHOULD** enable push protection to block commits containing detected secrets before they enter the repository history.
 
 ### 9.5 Access Governance
 
